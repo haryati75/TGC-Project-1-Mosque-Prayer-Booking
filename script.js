@@ -38,54 +38,77 @@ map.on('locationerror', onLocationError);
 
 // wait for the DOM to be ready before loading
 window.addEventListener('DOMContentLoaded', async function () {
-   // load mosque data
-   let response1 = await axios.get('data/mosque.json');
-   let mosques = response1.data.mosques;
+
+   // *********************************
+   // LOAD Data
+   // *********************************
+   // load carpark information with geo location
+   let response1 = await loadJSON('data/carpark-info.json');
+   let carparks = response1.carparks;
+   // console.log(carparksInfo);
+
+   // load mosque info with geo location
+   let response2 = await loadJSON('data/mosques.json');
+   let mosques = response2.mosques;
    // console.log(mosques);
 
+   // setup nearby carparks for each mosques
+   let radiusKM = 0.5;
+   let mosquesCarparks = await getNearbyCarparks(mosques, carparks, radiusKM);
+   // console.log(mosques_carparks);
+
+   // load ALL carpark availability
+   let response3 = await loadJSON('https://api.data.gov.sg/v1/transport/carpark-availability');
+   let allCarparksAvailability = response3.items[0].carpark_data;
+
+   // update carpark availability of all the nearby carparks in each mosque
+   let mosquesCarparksAvailable = await getCarparksAvailability(mosquesCarparks, allCarparksAvailability);
+   console.log(mosquesCarparksAvailable);
+
+   // *********************************
+   // PLOT MAP MARKERS
+   // *********************************
    // mark each mosque to the map
-   for (let mosque of mosques) {
-      let mosqueLatLng = L.latLng([mosque.location.latitude, mosque.location.longitude]);
+   for (let m of mosquesCarparksAvailable) {
+      let mosqueLatLng = L.latLng([m.location.latitude, m.location.longitude]);
       let mosqueMarker = L.marker(mosqueLatLng);
       mosqueMarker.addTo(markerCluster);
 
       // mosque popup
       mosqueMarker.bindPopup(`
-      <h2>${mosque.name}</h2>
-      <p>${mosque.address}</p>
+      <h1>Masjid ${m.mosque}</h1>
+      <p>${m.address}</p>
+      <p>${m.telephone}</p>
       <button>Book</button>
       `);
 
-      // mosque cirle radius of 1km 
-      L.circle(mosqueLatLng, {
-         color: 'green',
-         fillColor: 'yellow',
-         fillOpacity: 0.5,
-         radius: 1000
-      }).addTo(map);
+      if (m.carparks_nearby.length > 0) {
+         // mosque cirle radius 
+         L.circle(mosqueLatLng, {
+            color: 'green',
+            fillColor: 'yellow',
+            fillOpacity: radiusKM,
+            radius: 1000
+         }).addTo(map);
+      }
 
    }
 
-   // load carpark information and convert its coordinate from X,Y (Singapore SVY21 format) to latlng format
-   let response2 = await axios.get('https://data.gov.sg/api/action/datastore_search?resource_id=139a3035-e624-4f56-b63f-89ae28d4ae4c&limit=100');
-   let carparksInfo = response2.data.result.records;
-   // console.log(carparksInfo);
+   // mark the carparks near each mosque
+   for (let m of mosquesCarparksAvailable) {
+      for (let c of m.carparks_nearby) {
+         // lots available and percentage
+         let percentAvailable = parseInt(c.lots_info.lots_available) / parseInt(c.lots_info.total_lots) * 100;
 
-   for (let carpark of carparksInfo) {
-      // console.log([carpark.car_park_no, carpark.x_coord, carpark.y_coord]);
-      // carpark.x_coord, carpark.y_coord
-      // car_park_no
-      // address
-      // car_park_type
-
-      let carparkGeo = await axios.get(`https://developers.onemap.sg/commonapi/convert/3414to4326?X=${carpark.x_coord}&Y=${carpark.y_coord}`)
-      console.log(carparkGeo.data);
-      let carparkMarker = L.marker([carparkGeo.data.latitude, carparkGeo.data.longitude]);
-      carparkMarker.addTo(markerCluster);
-      carparkMarker.bindPopup(`
-      <h2>${carpark.car_park_no}</h2>
-      <p>${carpark.address}</p>
-      <p>${carpark.car_park_type}</p>
-      `);
+         let cMarker = L.marker([c.location.latitude, c.location.longitude]);
+         cMarker.addTo(markerCluster);
+         cMarker.bindPopup(`
+            <h2>Carpark near Masjid ${m.mosque} - ${c.carpark_no}</h2>
+            <p>${c.address}</p>
+            <p>${c.carpark_type}</p>
+            <p>Available: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%)</p>
+         `);
+      }
    }
+
 })

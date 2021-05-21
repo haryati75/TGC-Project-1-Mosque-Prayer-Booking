@@ -1,0 +1,984 @@
+{
+   "mosques":[
+      {
+         "mosque":"Abdul Aleem Siddique",
+         "address":"90 Lorong K Telok Kurau Singapore 425723",
+         "telephone":"6346 0153",
+         "location":{
+            "x":"36838.6093506226",
+            "y":"32807.1858167779",
+            "latitude":"1.31296978420023",
+            "longitude":"103.912737844439"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Abdul Gafoor",
+         "address":"41 Dunlop Street Singapore 209369",
+         "telephone":"6295 4209",
+         "location":{
+            "x":"30267.9894984746",
+            "y":"31864.003632497",
+            "latitude":"1.30444116309247",
+            "longitude":"103.853697520982"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Abdul Hamid Kampung Pasiran",
+         "address":"10 Gentle Road Singapore 309194",
+         "telephone":"6251 2729",
+         "location":{
+            "x":"28860.9124471378",
+            "y":"33583.6659608204",
+            "latitude":"1.31999325325424",
+            "longitude":"103.841054326264"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Ahmad",
+         "address":"2 Lorong Sarhad Singapore 119173",
+         "telephone":"6479 6442",
+         "location":{
+            "x":"22869.0766164167",
+            "y":"29257.9712475557",
+            "latitude":"1.28087278741945",
+            "longitude":"103.787215272507"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Ahmad Ibrahim",
+         "address":"15 Jalan Ulu Seletar Singapore 769227",
+         "telephone":"6454 0848",
+         "location":{
+            "x":"26571.1200771481",
+            "y":"43157.7508079261",
+            "latitude":"1.40657783844878",
+            "longitude":"103.82047888896"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Abdul Razak",
+         "address":"30 Jalan Ismail Singapore 419285",
+         "telephone":"6846 8404",
+         "location":{
+            "x":"36230.7876179451",
+            "y":"33954.2006546948",
+            "latitude":"1.32334314102583",
+            "longitude":"103.907276575467"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Abrar",
+         "address":"192 Telok Ayer Street Singapore 068635",
+         "telephone":"6220 6306",
+         "location":{
+            "x":"29541.4707174664",
+            "y":"29199.0670271236",
+            "latitude":"1.2803404583152",
+            "longitude":"103.847169281152"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Amin",
+         "address":"50 Telok Blangah Way Singapore 098801",
+         "telephone":"6272 5309",
+         "location":{
+            "x":"26436.822910009",
+            "y":"28628.9995796476",
+            "latitude":"1.27518496699142",
+            "longitude":"103.81927286553"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Ansar",
+         "address":"155 Bedok North Avenue 1 Singapore 469751",
+         "telephone":"6449 2420",
+         "location":{
+            "x":"38353.8889349755",
+            "y":"34357.4824012257",
+            "latitude":"1.32698962752944",
+            "longitude":"103.926353888834"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Falah",
+         "address":"22 Bideford Road #01-01 Singapore 229923",
+         "telephone":"6235 3172",
+         "location":{
+            "x":"28370.4873291394",
+            "y":"31782.9780864324",
+            "latitude":"1.30370847731938",
+            "longitude":"103.836647579487"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Firdaus",
+         "address":"11 Jalan Ibadat Singapore 698955",
+         "telephone":"6764 6334",
+         "location":{
+            "x":"14990.6927510062",
+            "y":"39656.4898355752",
+            "latitude":"1.37491084530591",
+            "longitude":"103.716420634375"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Huda",
+         "address":"34 Jalan Haji Alias Singapore 268534",
+         "telephone":"6468 4844",
+         "location":{
+            "x":"23729.206843392",
+            "y":"33943.9899622649",
+            "latitude":"1.32325160926777",
+            "longitude":"103.794943228845"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Iman",
+         "address":"10 Bukit Panjang Ring Road Singapore 679943",
+         "telephone":"6769 0770",
+         "location":{
+            "x":"21257.5654866071",
+            "y":"40013.4182535335",
+            "latitude":"1.37814088305134",
+            "longitude":"103.772732862498"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Islah",
+         "address":"30, Punggol Field Singapore 828812",
+         "telephone":"6312 5194",
+         "location":{
+            "x":"35585.5759660536",
+            "y":"42565.4053677358",
+            "latitude":"1.40121991758225",
+            "longitude":"103.901481197076"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Istighfar",
+         "address":"2 Pasir Ris Walk Singapore 518239",
+         "telephone":"6426 7130",
+         "location":{
+            "x":"42559.1899886187",
+            "y":"39223.1784656998",
+            "latitude":"1.37099141689758",
+            "longitude":"103.9641430938"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Istiqamah",
+         "address":"2 Serangoon North Avenue 2 Singapore 555876",
+         "telephone":"6281 4287",
+         "location":{
+            "x":"32710.229776863",
+            "y":"39025.7902592812",
+            "latitude":"1.36920952852268",
+            "longitude":"103.87564329284"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Alkaff Kampung Melayu",
+         "address":"200 Bedok Reservoir Road Singapore 479221",
+         "telephone":"6242 7244",
+         "location":{
+            "x":"36977.6419438133",
+            "y":"35424.4084871747",
+            "latitude":"1.33663895627518",
+            "longitude":"103.913987885436"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Alkaff Upper Serangoon",
+         "address":"66 Pheng Geck Avenue Singapore 348261",
+         "telephone":"6280 0300",
+         "location":{
+            "x":"32153.4345981041",
+            "y":"35011.7616448738",
+            "latitude":"1.33290817294291",
+            "longitude":"103.870639545153"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Khair",
+         "address":"1 Teck Whye Crescent Singapore 688847",
+         "telephone":"6760 1139",
+         "location":{
+            "x":"18728.108557961",
+            "y":"40509.5714663789",
+            "latitude":"1.38262721931064",
+            "longitude":"103.75000369566"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Mawaddah",
+         "address":"151 Compassvale Bow Singapore 544997",
+         "telephone":"6489 0224",
+         "location":{
+            "x":"34334.1851038896",
+            "y":"40599.4063274954",
+            "latitude":"1.38344043858546",
+            "longitude":"103.890236002111"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Mukminin",
+         "address":"271 Jurong East Street 21 Singapore 609603",
+         "telephone":"6567 7777",
+         "location":{
+            "x":"17775.2128328811",
+            "y":"35705.6274461206",
+            "latitude":"1.33918180029285",
+            "longitude":"103.741442865773"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Muttaqin",
+         "address":"5140 Ang Mo Kio Avenue 6 Singapore 569844",
+         "telephone":"6454 7472",
+         "location":{
+            "x":"29414.594563772",
+            "y":"39150.052076418",
+            "latitude":"1.37033364985249",
+            "longitude":"103.846029708854"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Al-Taqua",
+         "address":"11A Jalan Bilal Singapore 468862",
+         "telephone":"6442 7704",
+         "location":{
+            "x":"41368.9872175977",
+            "y":"33803.2959594466",
+            "latitude":"1.32197659798958",
+            "longitude":"103.953445906032"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Angullia",
+         "address":"265 Serangoon Road Singapore 218099",
+         "telephone":"6295 1478",
+         "location":{
+            "x":"30303.9259491107",
+            "y":"32554.48459539",
+            "latitude":"1.31068562645391",
+            "longitude":"103.854020477829"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"An-Nahdhah",
+         "address":"9A Bishan Street 14 Singapore 579786",
+         "telephone":"6354 3138",
+         "location":{
+            "x":"29982.3277140744",
+            "y":"37294.8189950045",
+            "latitude":"1.35355555145539",
+            "longitude":"103.851131068482"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"An-Nur",
+         "address":"6 Admiralty Road Singapore 739983",
+         "telephone":"6363 1383",
+         "location":{
+            "x":"21165.2703529699",
+            "y":"46928.8295464553",
+            "latitude":"1.44068131443486",
+            "longitude":"103.771901884645"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Ar-Raudhah",
+         "address":"30 Bukit Batok East Avenue 2 Singapore 659919",
+         "telephone":"6899 5840",
+         "location":{
+            "x":"19395.525044851",
+            "y":"37085.381406948",
+            "latitude":"1.35166029918688",
+            "longitude":"103.756001919257"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Assyafaah",
+         "address":"1 Admiralty Lane Singapore 757620",
+         "telephone":"6756 3008",
+         "location":{
+            "x":"26451.7927888604",
+            "y":"48593.260976851",
+            "latitude":"1.45573461774392",
+            "longitude":"103.819406336269"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Assyakirin",
+         "address":"550 Yung An Road Singapore 618617",
+         "telephone":"6268 1846",
+         "location":{
+            "x":"15341.6007156624",
+            "y":"35284.3881286029",
+            "latitude":"1.33537134578322",
+            "longitude":"103.719575634254"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Ba\\'alwie",
+         "address":"2 Lewis Road Singapore 258590",
+         "telephone":"6732 6795",
+         "location":{
+            "x":"26806.0789329112",
+            "y":"33665.8719582502",
+            "latitude":"1.32073668393774",
+            "longitude":"103.822590572732"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Bencoolen",
+         "address":"59 Bencoolen Street #01-01 Singapore 189630",
+         "telephone":"6333 3016",
+         "location":{
+            "x":"29905.2915790686",
+            "y":"31305.121657867",
+            "latitude":"1.29938685594472",
+            "longitude":"103.850438477321"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Burhani",
+         "address":"39 Hill Street Singapore 179364",
+         "telephone":"6334 3712",
+         "location":{
+            "x":"29912.0135836964",
+            "y":"30639.6863921192",
+            "latitude":"1.29336889330265",
+            "longitude":"103.850498837014"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Darul Aman",
+         "address":"1 Jalan Eunos Singapore 419493",
+         "telephone":"6744 5544",
+         "location":{
+            "x":"35929.1307780864",
+            "y":"33359.2440560851",
+            "latitude":"1.31796264785264",
+            "longitude":"103.904565876864"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Darul Ghufran",
+         "address":"503 Tampines Avenue 5 Singapore 529651",
+         "telephone":"6786 5545",
+         "location":{
+            "x":"39868.2694694074",
+            "y":"37492.3424690422",
+            "latitude":"1.35533958715944",
+            "longitude":"103.939962631751"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Darul Makmur",
+         "address":"950 Yishun Avenue 2 Singapore 769099",
+         "telephone":"6752 1402",
+         "location":{
+            "x":"28114.5918971626",
+            "y":"46483.1361498013",
+            "latitude":"1.43665145799079",
+            "longitude":"103.834348296435"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Darussalam",
+         "address":"3002 Commonwealth Avenue West Singapore 129579",
+         "telephone":"6777 0028",
+         "location":{
+            "x":"21072.683587309",
+            "y":"32753.5312149059",
+            "latitude":"1.31248503999872",
+            "longitude":"103.771073228064"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"En-Naeem",
+         "address":"120 Tampines Road Singapore 535136",
+         "telephone":"6911 8140",
+         "location":{
+            "x":"34591.8845682321",
+            "y":"38110.2464670949",
+            "latitude":"1.3609293212899",
+            "longitude":"103.892551071469"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Haji Mohd Salleh (G)",
+         "address":"245 Geylang Road Singapore 389304",
+         "telephone":"6846 0857",
+         "location":{
+            "x":"32848.8734869994",
+            "y":"32744.6778599359",
+            "latitude":"1.3124053715982",
+            "longitude":"103.876888099521"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Haji Muhammad Salleh (P)",
+         "address":"37 Palmer Road Singapore 079424",
+         "telephone":"6220 9257",
+         "location":{
+            "x":"29570.6213585651",
+            "y":"28359.4116382692",
+            "latitude":"1.27274690790605",
+            "longitude":"103.847431169409"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Haji Yusoff",
+         "address":"2 Hillside Drive Singapore 548920",
+         "telephone":"6284 5459",
+         "location":{
+            "x":"33163.3318073563",
+            "y":"37543.7639898788",
+            "latitude":"1.35580654003322",
+            "longitude":"103.879714474791"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Hajjah Fatimah",
+         "address":"4001 Beach Road Singapore 199584",
+         "telephone":"6297 2774",
+         "location":{
+            "x":"31287.7769227466",
+            "y":"31692.3800786417",
+            "latitude":"1.3028889689211",
+            "longitude":"103.862860767104"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Hajjah Rahimabi",
+         "address":"76 Kim Keat Road Singapore 328835",
+         "telephone":"6255 8262",
+         "location":{
+            "x":"30396.1146605173",
+            "y":"34261.5590746477",
+            "latitude":"1.32612379680643",
+            "longitude":"103.854848970868"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Hang Jebat",
+         "address":"100 Jalan Hang Jebat Singapore 139533",
+         "telephone":"6471 0728",
+         "location":{
+            "x":"24134.4823722774",
+            "y":"30226.2889340911",
+            "latitude":"1.28963009167863",
+            "longitude":"103.798585306671"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Hasanah",
+         "address":"492 Teban Gardens Singapore 608878",
+         "telephone":"6561 7990",
+         "location":{
+            "x":"17416.6149237454",
+            "y":"33772.0792257804",
+            "latitude":"1.32169537559417",
+            "longitude":"103.738221325692"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Hussein Sulaiman",
+         "address":"394 Pasir Panjang Road Singapore 118730",
+         "telephone":"",
+         "location":{
+            "x":"21143.1711835023",
+            "y":"30420.4548412319",
+            "latitude":"1.29138554685321",
+            "longitude":"103.771707105921"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Jamae Chulia",
+         "address":"218 South Bridge Road Singapore 058767",
+         "telephone":"6221 4165",
+         "location":{
+            "x":"29343.980296067",
+            "y":"29514.7678482123",
+            "latitude":"1.28319555478948",
+            "longitude":"103.845394767843"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Jamek Queenstown",
+         "address":"946 Margaret Drive Singapore 149309",
+         "telephone":"6928 0442",
+         "location":{
+            "x":"26007.5675104875",
+            "y":"30600.0527678095",
+            "latitude":"1.29301045552152",
+            "longitude":"103.815415725873"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Jamiyah Ar-Rabitah",
+         "address":"601 Tiong Bahru Road Singapore 158787",
+         "telephone":"6273 3848",
+         "location":{
+            "x":"26535.7553281887",
+            "y":"30083.544154305",
+            "latitude":"1.28833936244056",
+            "longitude":"103.82016174201"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Kampong Delta",
+         "address":"10 Delta Avenue Singapore 169831",
+         "telephone":"6272 1750",
+         "location":{
+            "x":"27449.2491606409",
+            "y":"30449.8713260312",
+            "latitude":"1.29165232609054",
+            "longitude":"103.828369851275"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Kampung Siglap",
+         "address":"451 Marine Parade Road Singapore 449283",
+         "telephone":"6243 7060",
+         "location":{
+            "x":"38488.9912002124",
+            "y":"32441.8079398256",
+            "latitude":"1.30966492186043",
+            "longitude":"103.927567203546"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Kassim",
+         "address":"450 Changi Road Singapore 419877",
+         "telephone":"6440 9434",
+         "location":{
+            "x":"36783.9239120288",
+            "y":"33442.7739145868",
+            "latitude":"1.31871782868659",
+            "longitude":"103.91224664974"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Khadijah",
+         "address":"583 Geylang Road Singapore 389522",
+         "telephone":"6747 5607",
+         "location":{
+            "x":"33873.7830713522",
+            "y":"32941.55529413",
+            "latitude":"1.31418568242722",
+            "longitude":"103.886097452699"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Khalid",
+         "address":"130 Joo Chiat Road Singapore 427727",
+         "telephone":"6345 2884",
+         "location":{
+            "x":"35315.3401687518",
+            "y":"32867.9146820717",
+            "latitude":"1.31351939401639",
+            "longitude":"103.899050540399"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Maarof",
+         "address":"20 Jurong West Street 26 Singapore 648125",
+         "telephone":"6515 5033",
+         "location":{
+            "x":"13722.1096740905",
+            "y":"36738.8445023559",
+            "latitude":"1.34852417861926",
+            "longitude":"103.705022920302"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Malabar",
+         "address":"471 Victoria Street Singapore 198370",
+         "telephone":"6294 3862",
+         "location":{
+            "x":"30948.0703518959",
+            "y":"31940.7713207547",
+            "latitude":"1.30513536571363",
+            "longitude":"103.859808371015"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Moulana Mohd Ali",
+         "address":"80 Raffles Place #B1-01 UOB Plaza Singapore 048624",
+         "telephone":"6536 5238",
+         "location":{
+            "x":"29883.9217772046",
+            "y":"29777.7636648808",
+            "latitude":"1.2855739689279",
+            "longitude":"103.850246368708"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Muhajirin",
+         "address":"275 Braddell Road Singapore 579704",
+         "telephone":"6256 1166",
+         "location":{
+            "x":"30084.9463791866",
+            "y":"36126.5743143782",
+            "latitude":"1.3429903554654",
+            "longitude":"103.852053082462"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Mujahidin",
+         "address":"590 Stirling Road Singapore 148952",
+         "telephone":"6473 7400",
+         "location":{
+            "x":"24388.3648925321",
+            "y":"31168.3421225809",
+            "latitude":"1.29814971848509",
+            "longitude":"103.800866437422"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Mydin",
+         "address":"67 Jalan Lapang Singapore 419007",
+         "telephone":"6243 2129",
+         "location":{
+            "x":"37120.0900065554",
+            "y":"33862.5839476436",
+            "latitude":"1.32251434012025",
+            "longitude":"103.91526739715"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Omar Kg Melaka",
+         "address":"10 Keng Cheow Street Singapore 059607",
+         "telephone":"6532 6764",
+         "location":{
+            "x":"29209.7704823297",
+            "y":"30048.1193536669",
+            "latitude":"1.28801900397742",
+            "longitude":"103.844188860571"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Omar Salmah",
+         "address":"441-B Jalan Mashor Singapore 299173",
+         "telephone":"6250 0120",
+         "location":{
+            "x":"27849.0898006381",
+            "y":"35208.7978649102",
+            "latitude":"1.33469038264156",
+            "longitude":"103.831962564195"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Petempatan Melayu Sembawang",
+         "address":"27-B Jalan Mempurong Singapore 759055",
+         "telephone":"6257 7614",
+         "location":{
+            "x":"28941.2977042748",
+            "y":"48958.7829596754",
+            "latitude":"1.45904029284896",
+            "longitude":"103.841777123415"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Pulau Bukom",
+         "address":"Pulau Bukom PO Box 1908 Singapore 903808",
+         "telephone":"",
+         "location":{
+            "x":"20802.2638212014",
+            "y":"24251.5574501641",
+            "latitude":"1.23559615341257",
+            "longitude":"103.768645291981"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Pusara Aman",
+         "address":"11 Lim Chu Kang Road Singapore 719452",
+         "telephone":"6792 9378",
+         "location":{
+            "x":"12532.5035455655",
+            "y":"39419.5552069061",
+            "latitude":"1.37276690829174",
+            "longitude":"103.694332207543"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Sallim Mattar",
+         "address":"1 Mattar Road Singapore 387713",
+         "telephone":"6749 2382",
+         "location":{
+            "x":"33361.5458454425",
+            "y":"34213.1490063127",
+            "latitude":"1.32568561604232",
+            "longitude":"103.881494967857"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Sultan",
+         "address":"3 Muscat Street Singapore 198833",
+         "telephone":"6293 4405",
+         "location":{
+            "x":"30860.2731314423",
+            "y":"31611.1411130242",
+            "latitude":"1.30215431475589",
+            "longitude":"103.859019441744"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Tasek Utara",
+         "address":"46 Bristol Road Singapore 219852",
+         "telephone":"6293 8351",
+         "location":{
+            "x":"29762.4876253745",
+            "y":"32810.8079561219",
+            "latitude":"1.31300376008595",
+            "longitude":"103.849155405044"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Tentera Di Raja",
+         "address":"81 Clementi Road Singapore 129797",
+         "telephone":"6776 5612",
+         "location":{
+            "x":"20856.8475593701",
+            "y":"31230.994276097",
+            "latitude":"1.29871571179159",
+            "longitude":"103.769134185089"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Wak Tanjong",
+         "address":"25 Paya Lebar Road Singapore 409004",
+         "telephone":"6747 2743",
+         "location":{
+            "x":"34519.9744070722",
+            "y":"33305.1834697463",
+            "latitude":"1.31747407529415",
+            "longitude":"103.891903879244"
+         },
+         "carparks_nearby":[
+            
+         ]
+      },
+      {
+         "mosque":"Yusof Ishak",
+         "address":"10 Woodlands Drive 17 Singapore 737740",
+         "telephone":"6893 0093",
+         "location":{
+            "x":"23866.7438955074",
+            "y":"45370.6078050267",
+            "latitude":"1.42658985264169",
+            "longitude":"103.796177474662"
+         },
+         "carparks_nearby":[
+            
+         ]
+      }
+   ]
+}

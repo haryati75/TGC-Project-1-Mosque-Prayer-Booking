@@ -3,13 +3,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book a Prayer</title>
+    <title>OurMasjidSG | Book a Prayer</title>
     <link rel="icon" type="image/png" href="images/favicon.ico">
 
     <!-- Load styles for Fontawesome, Bootstrap here -->
     <!-- Fontawesome before bootstrap -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" /> -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     
     <!-- Load styles for Leaflet and Clustering Markers here -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
@@ -19,16 +19,105 @@
     <!-- Load your custom styles here -->
     <link rel="stylesheet" href="styles/style.css">
 </head>
+<!-- ----------------------------------------------- -->
 <body>
 
-    <!-- Setup navbar here -->
-    <div id="map"></div>
+    <!-- *************************** -->
+    <!-- Setup Bootstrap navbar here -->
+    <!-- *************************** -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
+        <!-- Display Logo for Small Screen -->
+        <a class="navbar-brand d-md-none d-lg-none" href="#">
+            <img src="images/mosque-logo.png" alt="Our Mosque Logo - Small">
+            <h4>Show Nearby Carparks</h4>
+        </a>
+        <!-- Display Logo for Laptop Screen -->
+        <a class="navbar-brand d-none d-md-block d-lg-block" href="#">
+            <img src="images/logo-full-horizontal2.png" alt="Our Mosque Logo - Full Horizontal" height="40">
+            Show Nearby Carparks
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                <!-- Home Page Icon -->
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="index.html"><i class="fas fa-car"></i></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="index.html"><i class="fas fa-mosque"></i></a>
+                </li>
+                
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Carparks Nearby<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Book a Prayer<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#footer-prayer">Prayer Times</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mosque District
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" id="districts">
+                    </div>
+                </li>
+                
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search Mosque/District" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- *************************** -->
+    <!--       Main Map              -->
+    <!-- *************************** -->
+    <main>
+        <div id="map"></div>
+    </main>
+    
+    <!-- *************************** -->
+    <!--       Footer Section        -->
+    <!-- *************************** -->
+    <!-- Singapore Prayer Times, Credits and Social Media -->
+    <footer class="container-fluid">
+        <div class="row justify-content-start p-3" id="footer-prayer">
+            <div class="col ms-0 p-0"><i class="fas fa-calendar-alt"></i></div>
+            <div class="col ms-auto"><h4>Singapore Prayer Times: <span id="prayer-date"></span></h4></div>
+        </div>
+        <!-- <div class="row justify-content-start">
+            <div class="col" id="prayer-times"></div> -->
+        <div class="row justify-content-start" id="prayer-times"></div>
+        <div class="row">
+            <div class="col-sm footer-credit">
+                <h5>Credits:</h5>
+                <p>Muis, MuslimSG, OurMasjidSG, Data.gov.sg, HDB, URA, OneMap API</p>
+                <p>Developed by: Haryati Hassan, TGC12 Project 1, May 2021</p>
+            </div>
+            <div class="col-sm social-media ms-auto">
+                <a href=""><i class="fab fa-facebook-square fa-facebook"></i></a>
+                <a href=""><i class="fab fa-instagram-square fa-instagram"></i></a>
+                <a href=""><i class="fab fa-whatsapp-square fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+    </footer>
+
+    <!-- ----------------------------------------------- -->
     <!-- Optional Javascripts here -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         
     <!-- LeafletJS and Marker Clustering JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>

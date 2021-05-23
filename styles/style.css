@@ -1,34 +1,80 @@
 body {
-    background-color: red;
+    background-color: whitesmoke;
     margin: 0px;
     padding: 0px;
 }
 
 #map {
-    height: 80%;
-    background-color: yellow;
+    height: 70vh;
+    background-color: #94d0cc;
 }
 
+/* Nav Bar */
+.navbar-brand {
+  color: #f55c47 !important;
+}
+
+.fas {
+  font-size: 30px;
+  padding: 5px;
+}
 
 /* Mobile-first Responsive Design */
 /* Ipad */
 @media screen and (min-width:768px) {
     body {
-      background-color: green;  
+      background-color: #faf1e6;  
     }
-    
   }
   
   /* bigger tablet  */
   @media screen and (min-width:992px) {
     body {
-      background-color: purple;  
+      background-color: #e4efe7;  
     }
   }
   
   /* laptop */
   @media screen and (min-width:1200px) {
     body {
-      background-color: blue;  
+      background-color: #fdfaf6;  
     }
   }
+
+
+/* Footer */
+.prayer-time {
+  color: #f55c47;
+}
+
+/* Social Media icons bar */
+.social-media {
+  width: 100px;
+  margin: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.fab {
+  font-size: 30px;
+  padding: 5px;
+}
+
+.fab:hover {
+  opacity: 0.7;
+}
+
+/* Facebook */
+.fa-facebook {
+  color: #3B5998;
+}
+
+/* Instagram */
+.fa-instagram {
+  color: #cb2027;
+}
+
+/* Whatsapp */
+.fa-whatsapp {
+  color: #25d366;
+}

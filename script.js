@@ -32,6 +32,11 @@ let groupCarparks = L.layerGroup();
 groupMosques.addTo(map);
 groupCarparks.addTo(map);
 
+let layerSearchArea = L.layerGroup();
+let layerLocateMe = L.layerGroup();
+layerSearchArea.addTo(map);
+layerLocateMe.addTo(map);
+
 // show my current location
 function showCurrentLocation() {
    map.locate({setView: true, maxZoom: 13});
@@ -39,27 +44,60 @@ function showCurrentLocation() {
    map.on('locationerror', onLocationError);
 }
 
-// map.locate({setView: true, maxZoom: 13});
-
+// ------------------------------------------------------------
+// Functions: Toggling Layers and Groups
+// ------------------------------------------------------------
 function onLocationFound(e) {
-   // let radius = e.accuracy;
-   let radius = 2000; // within 2km 
-   
-   L.marker(e.latlng).addTo(map)
-      .bindPopup("You are within " + (radius/1000) + " km from this point").openPopup();
-   L.circle(e.latlng, radius).addTo(map);
-}
 
-// map.on('locationfound', onLocationFound);
+   // clear previous locate me marker-layer
+   map.removeLayer(layerLocateMe);
+
+   // let radius = e.accuracy;
+   let radius = 500; // within 2km 
+   let me = L.marker(e.latlng);
+   me.addTo(layerLocateMe);
+
+   me.bindPopup("You are within " + (radius/1000) + " km from this point").openPopup();
+   L.circle(e.latlng, radius).addTo(layerLocateMe);
+
+   layerLocateMe.addTo(map)
+}
 
 // show error message if current location is not found
 function onLocationError(e) {
    alert(e.message);
 }
 
-// map.on('locationerror', onLocationError);
+function getLocation(strSearch, allMosques) {
+   let s = strSearch.toLowerCase();
+   for (let m of allMosques) {
+      // find string in mosque name, postal code, its district and its address
+      if (m.mosque.toLowerCase().includes(s) || m.postal_code === s || m.general_location.toLowerCase().includes(s) || m.address.toLowerCase().includes(s)) {
+         console.log("Found", strSearch)
+         console.log(m)
+         return L.latLng([m.location.latitude, m.location.longitude]);
+      }
+   }
+   return null;
+}
 
+function mapLocationArea (latLng, radius) {
+   layerSearchArea.clearLayers();
+   map.removeLayer(layerSearchArea);
+   map.removeLayer(groupCarparks);
 
+   L.circle(latLng, {
+      color: 'red',
+      fillColor: 'pink',
+      fillOpacity: 0.3,
+      radius: radius
+   }).addTo(layerSearchArea);
+      
+   map.addLayer(groupMosques);
+   map.addLayer(layerSearchArea);
+   
+   map.setView(latLng, 15);
+}
 
 // ------------------------------------------------------------
 // Functions: Plotting of markers using Leaflet JS 
@@ -90,7 +128,6 @@ function plotMosques(showRadius) {
             radius: radiusKM * 1000
          }).addTo(groupMosques);
       }
-      
    }
 }
 
@@ -106,7 +143,7 @@ function plotCarparks() {
          cMarker.addTo(markerCluster);
          cMarker.bindPopup(`
             <i class="fas fa-parking"></i>
-            <h2>Carpark near Masjid ${m.mosque} - ${c.carpark_no}</h2>
+            <h3>Carpark near Masjid ${m.mosque} - ${c.carpark_no}</h3>
             <p>${c.address}</p>
             <p>${c.carpark_type}</p>
             <p>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%)</p>
@@ -173,12 +210,19 @@ window.addEventListener('DOMContentLoaded', async function () {
    let rawDistrictCodes = await loadCSV('data/sector-area.csv');
    let transformedMosques = getMosquesDistricts(mosques, rawDistrictCodes);
 
+   // sort the District codes to prepare for Dropdown list
+   let arrDistricts = rawDistrictCodes.map( d => {
+      return d.general_location;
+   })
+   let sortedDistricts = arrDistricts.sort();
+
    let dropdownDistricts = document.getElementById('districts');
-   for (let dc of rawDistrictCodes) {
+   // for (let dc of rawDistrictCodes) {
+   for (let dc of sortedDistricts) {
       let aElement = document.createElement('a');
       aElement.className = "dropdown-item district";
       aElement.href = "#"
-      aElement.innerText = dc.general_location;
+      aElement.innerText = dc;
       dropdownDistricts.appendChild(aElement);
    }
 
@@ -194,7 +238,7 @@ window.addEventListener('DOMContentLoaded', async function () {
    // *********************************
    // PLOT MAP MARKERS
    // *********************************
-   // mark each mosque to the map
+   // mark each mosque to the map with the radius ON
    plotMosques(true);
 
    // mark the carparks near each mosque
@@ -204,7 +248,16 @@ window.addEventListener('DOMContentLoaded', async function () {
    map.removeLayer(groupCarparks);
 
    showCurrentLocation();
-   
+
+   // create listeners for rendered dropdown inside DOMContentLoaded
+   for (let district of document.querySelectorAll(".district")) {
+      district.addEventListener('click', function(e){
+         let selectedDistrict = e.target.innerText;
+         let radius = 1000;
+         let sLatLng = getLocation(selectedDistrict, mosquesCarparksAvailable);
+         mapLocationArea(sLatLng, radius);
+      })
+   }
 })
 
 // refresh every 3 minutes (1s = 1000) 
@@ -224,7 +277,12 @@ setInterval(async function() {
 
 }, 180000)
 
+// *********************************
+// TOGGLE clicks on navbar icons
+// *********************************
 document.querySelector('#toggle-mosques-fas').addEventListener('click', function() {
+   map.removeLayer(layerLocateMe);
+   map.removeLayer(layerSearchArea);
    if (map.hasLayer(groupMosques)) {
       map.removeLayer(groupMosques);
    } else {
@@ -233,6 +291,8 @@ document.querySelector('#toggle-mosques-fas').addEventListener('click', function
 })
 
 document.querySelector('#toggle-carparks-fas').addEventListener('click', function() {
+   map.removeLayer(layerLocateMe);
+   map.removeLayer(layerSearchArea);
    if (map.hasLayer(groupCarparks)) {
       map.removeLayer(groupCarparks);
    } else {
@@ -242,4 +302,22 @@ document.querySelector('#toggle-carparks-fas').addEventListener('click', functio
 
 document.querySelector('#locate-me-fas').addEventListener('click', function() {
    showCurrentLocation();
+})
+
+// *********************************
+// SEARCH FUNCTION EVENTS
+// *********************************
+document.querySelector('#btn-search').addEventListener('click', function () {
+   let val = document.getElementById('input-search').value;
+   let radius = 1000;
+   let sLatLng = getLocation(val, mosquesCarparksAvailable);
+   mapLocationArea(sLatLng, radius);
+})
+
+document.querySelector('#input-search').addEventListener('click', function () {
+   let val = document.getElementById('input-search').value;
+   let radius = 1000;
+   let sLatLng = getLocation(val, mosquesCarparksAvailable);
+   mapLocationArea(sLatLng, radius);
+
 })

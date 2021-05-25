@@ -9,7 +9,7 @@ async function loadCSV(url) {
 }
 
 async function loadJSON(url) {
-    // read in the raw CSV file
+    // read in the JSON file
     let response = await axios.get(url);
 
     // return as an Array of JSON objects
@@ -87,6 +87,7 @@ function getCarparksAvailability(arrMosquesCarparks, arrAvailability) {
            // if carpark found, save its lots information
            if (lotsInfo != undefined) {
               mc['lots_info'] = lotsInfo.carpark_info[0];
+              mc['lots_updated_on'] = lotsInfo.update_datetime;
               newCarparksNearby.push(mc);
            } 
         }

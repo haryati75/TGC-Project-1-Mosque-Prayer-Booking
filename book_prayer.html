@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" id="book-prayer">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,14 +28,14 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
         <!-- Display Logo for Small Screen -->
-        <a class="navbar-brand d-md-none d-lg-none" href="index.html">
+        <a class="navbar-brand d-md-none d-lg-none" href="#">
             <img src="images/mosque-logo.png" alt="Our Mosque Logo - Small">
-            Show Nearby Carparks
+            <h4>Mosque Prayer Booking</h4>
         </a>
         <!-- Display Logo for Laptop Screen -->
-        <a class="navbar-brand d-none d-md-block d-lg-block" href="index.html">
+        <a class="navbar-brand d-none d-md-block d-lg-block" href="#">
             <img src="images/logo-full-horizontal2.png" alt="Our Mosque Logo - Full Horizontal" height="40">
-            Show Nearby Carparks
+            <h4>Mosque Prayer Booking</h4>
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,17 +47,17 @@
 
                 <!-- Home Page Icon -->
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="fas fa-car" id="toggle-carparks-fas"></i></a>
+                    <a class="nav-link active" aria-current="page" href="index.html"><i class="fas fa-car"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="fas fa-mosque" id="toggle-mosques-fas"></i></a>
+                    <a class="nav-link active" aria-current="page" href="index.html"><i class="fas fa-mosque"></i></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#"><i class="fas fa-street-view" id="locate-me-fas"></i></a>
-                </li>
-
+                
                 <li class="nav-item active">
-                    <a class="nav-link" href="book_prayer.html">Book a Prayer<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="#">Carparks Nearby<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Book a Prayer<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#footer-prayer">Prayer Times</a>
@@ -78,40 +78,99 @@
         </div>
     </nav>
 
-    <!-- *************************** -->
-    <!--       Main Map              -->
-    <!-- *************************** -->
-    <main>
-        <div id="singapore-map"></div>
+    <!-- ******************************** -->
+    <!-- Main BOOKING FORM                -->
+    <!-- ******************************** -->
+    <main class="container-fluid ms-auto">
+        <h1>Book a Prayer Session</h1>
+        <form class="container-fluid p-5">
+            <div class="row">
+                <label for="fname">Mosque:</label><br>
+                <input type="text" id="book-mosque" name="book-mosque"><br>
+                <label for="fname">Date to visit:</label><br>
+                <input type="text" id="book-date" name="book-date"><br>
+            </div>
+
+            <!-- dropdown list - prayer session -->
+            <div class="row">
+                <label for="book-session">Prayer Session: </label>
+                <select name="book-session" id="book-session">
+                    <option value="Subuh">Subuh</option>
+                    <option value="Zuhur" selected>Zuhur</option>
+                    <option value="Asar">Asar</option>
+                    <option value="Maghrib">Maghrib</option>
+                    <option value="Isyak">Isyak</option>
+                    <option value="Friday">Friday Prayer</option>
+                    <option value="Eid">Eid Prayer</option>
+                </select>
+                <br>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <label for="fname">Full Name (as in NRIC): </label>
+                <input type="text" id="fname" name="fname"><br>
+                <label for="email">Email: </label>
+                <input type="text" id="email" name="email"><br>
+                <label for="mobile">Mobile No.: </label>
+                <input type="text" id="mobile" name="mobile">
+            </div>
+
+            <div class="row">
+                <label for="gender">Gender: </label><br>
+                <input type="radio" id="male" name="gender" value="male">
+                <label for="male">Male</label><br>
+                <input type="radio" id="female" name="gender" value="female">
+                <label for="female">Female</label><br>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <label for="accessory">Accessories: </label><br>
+                <input type="checkbox" id="accessory1" name="accessory" value="Mat">
+                <label for="vehicle1"> I have my own mat</label><br>
+                <input type="checkbox" id="accessory2" name="accessory" value="Sarong">
+                <label for="vehicle2"> I have my own sarong/telekung</label><br>
+                <input type="checkbox" id="accessory3" name="accessory" value="Wudhu">
+                <label for="vehicle3"> I will take wudhu at mosque</label>
+            </div>
+
+            <div class="row justify-content-start">
+                <input class="btn btn-primary col-4 ms-10" type="submit" value="Confirm Booking">
+                <input class="btn btn-secondary col-4 ms-10" type="submit" value="Cancel">
+            </div>
+
+        </form>
     </main>
+
     
     <!-- *************************** -->
     <!--       Footer Section        -->
     <!-- *************************** -->
     <!-- Singapore Prayer Times, Credits and Social Media -->
     <footer class="container-fluid">
-        <div class="row justify-content-start" id="footer-prayer">
-            <!-- <div class="col-1"></div> -->
-            <div class="col-10"><i class="fas fa-calendar-alt"></i><h4>Singapore Prayer Times: <span id="prayer-date"></span></h4></div>
+        <div class="row justify-content-start p-3" id="footer-prayer">
+            <div class="col ms-0 p-0"><i class="fas fa-calendar-alt"></i></div>
+            <div class="col ms-auto"><h4>Singapore Prayer Times: <span id="prayer-date"></span></h4></div>
         </div>
-        <div class="row justify-content-start" width="80%" id="prayer-times"></div>
+        <!-- <div class="row justify-content-start">
+            <div class="col" id="prayer-times"></div> -->
+        <div class="row justify-content-start" id="prayer-times"></div>
         <div class="row">
             <div class="col-sm footer-credit">
                 <h5>Credits:</h5>
                 <p>Muis, MuslimSG, OurMasjidSG, Data.gov.sg, HDB, URA, OneMap API</p>
                 <p>Developed by: Haryati Hassan, TGC12 Project 1, May 2021</p>
             </div>
-
-            <div class="col social-media ms-auto">
-                <img src="images/muslimsg-logo.png" alt="MuslimSG Logo" width="180px" height="40px" margin="0 20"> 
-                <a href="https://www.facebook.com/MuslimSG/"><i class="fab fa-facebook-square fa-facebook"></i></a>
-                <a href="https://www.instagram.com/muslim.sg/"><i class="fab fa-instagram-square fa-instagram"></i></a>
-                <a href="https://www.youtube.com/channel/UCxfs0-rD8VluFXY2Jc5qiTw"><i class="fab fa-youtube-square fa-youtube"></i></a>
-                <a href=""><i class="fab fa-twitter-square fa-twitter"></i></a>
+            <div class="col-sm social-media ms-auto">
+                <a href=""><i class="fab fa-facebook-square fa-facebook"></i></a>
+                <a href=""><i class="fab fa-instagram-square fa-instagram"></i></a>
                 <a href=""><i class="fab fa-whatsapp-square fa-whatsapp"></i></a>
-
             </div>
         </div>
+
     </footer>
 
     <!-- ----------------------------------------------- -->
@@ -132,7 +191,6 @@
     <!-- Load your custom JS files here -->
     <script src="data.js"></script>
     <script src="geo.js"></script>
-    <script src="mosque_map.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -4,19 +4,21 @@ body {
     padding: 0px;
 }
 
-#map {
+#singapore-map {
     height: 70vh;
     background-color: #94d0cc;
 }
 
 /* Nav Bar */
 .navbar-brand {
-  color: #f55c47 !important;
+  color: #00405d !important;
+  font-size: 15px;
 }
 
 .fas {
   font-size: 30px;
   padding: 5px;
+  color: rgb(103, 139, 18);
 }
 
 /* Mobile-first Responsive Design */
@@ -47,12 +49,11 @@ body {
   color: #f55c47;
 }
 
-/* Social Media icons bar */
+/* Social Media icons bar - follow their brand colors */
 .social-media {
-  width: 100px;
   margin: 30px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .fab {
@@ -66,15 +67,25 @@ body {
 
 /* Facebook */
 .fa-facebook {
-  color: #3B5998;
+  color: #3b5998;
+}
+
+/* Youtube */
+.fa-youtube {
+  color: #cd201f;
 }
 
 /* Instagram */
 .fa-instagram {
-  color: #cb2027;
+  color: #3f729b;
+}
+
+/* Twitter */
+.fa-twitter {
+  color: #55acee;
 }
 
 /* Whatsapp */
 .fa-whatsapp {
-  color: #25d366;
+  color: #43d854;
 }

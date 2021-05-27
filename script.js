@@ -37,37 +37,50 @@ let layerLocateMe = L.layerGroup();
 layerSearchArea.addTo(map);
 layerLocateMe.addTo(map);
 
-// show my current location
-function showCurrentLocation() {
-   map.locate({setView: true, maxZoom: 13});
-   map.on('locationfound', onLocationFound);
-   map.on('locationerror', onLocationError);
-}
+// -----------------------------------
+// create custom marker icons for map
+// -----------------------------------
+// customer marker for mosques
+let mosqueIcon = L.icon({
+   iconUrl: 'images/locate-mosque.png',
+   iconSize: [50,50], // size of icon
+   iconAnchor: [24, 48], // point of the icon which will correspond to marker's location
+   popupAnchor: [-1, -40]
+})
+
+// customer marker for carparks 
+// [Need to find the right coordinates for icon]
+let carparkIcon = L.icon({
+   iconUrl: 'images/parking.svg',
+   iconSize: [40,40], // size of icon
+   iconAnchor: [20,40], // point of the icon which will correspond to marker's location
+   popupAnchor: [-1, -38]
+})
+
+// custom marker to locate current location (SVG vector file: can change colours)
+let meIcon = L.icon({
+   iconUrl: 'images/locate-me.svg',
+   iconSize: [45,45], // size of icon
+   iconAnchor: [41,45], // point of the icon which will correspond to marker's location
+   popupAnchor: [-20, -42] // point from which the popup should open relative to the iconAnchor
+})
+
+// custom marker for MUIS
+let muisIcon = L.icon({
+   iconUrl: 'images/muis-map.png',
+   iconSize: [50,50], // size of icon
+   iconAnchor: [24, 48], // point of the icon which will correspond to marker's location
+   popupAnchor: [-1, -40]
+})
+
+let muis = [1.3428713, 103.8523594] 
+let markerMuis = L.marker(muis, {icon: muisIcon});
+markerMuis.addTo(map);
+markerMuis.bindPopup('Majlis Ugama Islam Singapura is here').openPopup();
 
 // ------------------------------------------------------------
-// Functions: Toggling Layers and Groups
+// Functions: Toggling Layers and Groups, Finding locations
 // ------------------------------------------------------------
-function onLocationFound(e) {
-
-   // clear previous locate me marker-layer
-   map.removeLayer(layerLocateMe);
-
-   // let radius = e.accuracy;
-   let radius = 500; // within 2km 
-   let me = L.marker(e.latlng);
-   me.addTo(layerLocateMe);
-
-   me.bindPopup("You are within " + (radius/1000) + " km from this point").openPopup();
-   L.circle(e.latlng, radius).addTo(layerLocateMe);
-
-   layerLocateMe.addTo(map)
-}
-
-// show error message if current location is not found
-function onLocationError(e) {
-   alert(e.message);
-}
-
 function getLocation(strSearch, allMosques) {
    let s = strSearch.toLowerCase();
    for (let m of allMosques) {
@@ -99,6 +112,35 @@ function mapLocationArea (latLng, radius) {
    map.setView(latLng, 15);
 }
 
+// show my current location
+function showCurrentLocation() {
+   map.locate({setView: true, maxZoom: 13});
+   map.on('locationfound', onLocationFound);
+   map.on('locationerror', onLocationError);
+}
+
+function onLocationFound(e) {
+
+   // clear previous locate me marker-layer
+   map.removeLayer(layerLocateMe);
+
+   // let radius = e.accuracy;
+   let radius = 500; // within 2km 
+   // let me = L.marker(e.latlng);
+   let me = L.marker(e.latlng, {icon: meIcon});
+   // me2.addTo(map)
+   me.addTo(layerLocateMe);
+
+   me.bindPopup(`<i class="fas fas-popup fa-street-view"></i>You are within ${(radius/1000)} km from this point`).openPopup();
+   L.circle(e.latlng, radius).addTo(layerLocateMe);
+
+   layerLocateMe.addTo(map)
+}
+
+// show error message if current location is not found
+function onLocationError(e) {
+   alert(e.message);
+}
 // ------------------------------------------------------------
 // Functions: Plotting of markers using Leaflet JS 
 // ------------------------------------------------------------
@@ -106,7 +148,7 @@ function mapLocationArea (latLng, radius) {
 function plotMosques(showRadius) {
    for (let m of mosquesCarparksAvailable) {
       let mosqueLatLng = L.latLng([m.location.latitude, m.location.longitude]);
-      let mosqueMarker = L.marker(mosqueLatLng);
+      let mosqueMarker = L.marker(mosqueLatLng, {icon: mosqueIcon});
       mosqueMarker.addTo(groupMosques);
       mosqueMarker.addTo(markerCluster);
          
@@ -114,9 +156,25 @@ function plotMosques(showRadius) {
       mosqueMarker.bindPopup(`
       <i class="fas fa-mosque"></i>
       <h1>Masjid ${m.mosque}</h1>
-      <p>${m.address}</p>
-      <p>${m.telephone}</p>
-      <a class="btn btn-outline-success btn-sm" href="book_prayer.html" role="button">Book a Prayer</a>
+      <p><i class="fas fas-popup fa-map-marked-alt"></i>${m.address}</p>
+      <p><i class="fas fas-popup fa-phone-alt"></i>${m.telephone}</p>
+
+      <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="me@mail.com">
+      <small style="padding-bottom: 10px" id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      <div class="btn-group mt-10">
+        <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Book a Prayer Today
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Zuhur</a>
+          <a class="dropdown-item" href="#">Asar</a>
+          <a class="dropdown-item" href="#">Maghrib</a>
+          <a class="dropdown-item" href="#">Isyak</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Friday</a>
+        </div>
+      </div>
+
       `);
    
       if (showRadius && m.carparks_nearby.length > 0) {
@@ -138,16 +196,32 @@ function plotCarparks() {
          // lots available and percentage
          let percentAvailable = parseInt(c.lots_info.lots_available) / parseInt(c.lots_info.total_lots) * 100;
    
-         let cMarker = L.marker([c.location.latitude, c.location.longitude]);
+         let cMarker = L.marker([c.location.latitude, c.location.longitude], {icon: carparkIcon});
          cMarker.addTo(groupCarparks);
          cMarker.addTo(markerCluster);
          cMarker.bindPopup(`
             <i class="fas fa-parking"></i>
-            <h3>Carpark near Masjid ${m.mosque} - ${c.carpark_no}</h3>
-            <p>${c.address}</p>
-            <p>${c.carpark_type}</p>
-            <p>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%)</p>
-            <p>Last updated: ${c.lots_updated_on}</p>
+            <h1>Carpark near Masjid ${m.mosque}</h1>
+            <p><i class="far fas-popup fa-map"></i> ${c.address} - ${c.carpark_no}</p>
+            <p><i class="fas fas-popup fa-info-circle"></i>${c.carpark_type}</p>
+            <p><i class="fas fas-popup fa-car-side"></i>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%)</p>
+            <p><i class="fas fas-popup fa-history"></i>Last updated: ${c.lots_updated_on}</p>
+
+            <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <div class="btn-group mt-10">
+            <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               Book a Prayer Today
+            </button>
+            <div class="dropdown-menu">
+               <a class="dropdown-item" href="#">Zuhur</a>
+               <a class="dropdown-item" href="#">Asar</a>
+               <a class="dropdown-item" href="#">Maghrib</a>
+               <a class="dropdown-item" href="#">Isyak</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" href="#">Friday</a>
+            </div>
+            </div>
          `);
       }
    }
@@ -181,6 +255,27 @@ function displayPrayerTimes(prayerTimes) {
    }
 }
 
+// ------------------------------------------------------------
+// Navbar section for District listing (DOM element rendering)
+// ------------------------------------------------------------
+function loadDistrictDropdown(arrObjDistricts) {
+   // sort the District codes to prepare for Dropdown list
+   let arrDistricts = arrObjDistricts.map( d => {
+      return d.general_location;
+   })
+   let sortedDistricts = arrDistricts.sort();
+
+   let dropdownDistricts = document.getElementById('districts');
+   // for (let dc of rawDistrictCodes) {
+   for (let dc of sortedDistricts) {
+      let aElement = document.createElement('a');
+      aElement.className = "dropdown-item district";
+      aElement.href = "#"
+      aElement.innerText = dc;
+      dropdownDistricts.appendChild(aElement);
+   }
+}
+
 // *****************************************
 // DECLARATIVE SECTION HERE
 // *****************************************
@@ -209,22 +304,7 @@ window.addEventListener('DOMContentLoaded', async function () {
    // load sector locations to map with mosques and carpark postal code
    let rawDistrictCodes = await loadCSV('data/sector-area.csv');
    let transformedMosques = getMosquesDistricts(mosques, rawDistrictCodes);
-
-   // sort the District codes to prepare for Dropdown list
-   let arrDistricts = rawDistrictCodes.map( d => {
-      return d.general_location;
-   })
-   let sortedDistricts = arrDistricts.sort();
-
-   let dropdownDistricts = document.getElementById('districts');
-   // for (let dc of rawDistrictCodes) {
-   for (let dc of sortedDistricts) {
-      let aElement = document.createElement('a');
-      aElement.className = "dropdown-item district";
-      aElement.href = "#"
-      aElement.innerText = dc;
-      dropdownDistricts.appendChild(aElement);
-   }
+   loadDistrictDropdown(rawDistrictCodes);
 
    // ------------------------------------------------------------
    // Setup Main Objects: Mosques with nearby carparks assigned
@@ -252,10 +332,16 @@ window.addEventListener('DOMContentLoaded', async function () {
    // create listeners for rendered dropdown inside DOMContentLoaded
    for (let district of document.querySelectorAll(".district")) {
       district.addEventListener('click', function(e){
-         let selectedDistrict = e.target.innerText;
+         let val = e.target.innerText;
          let radius = 1000;
-         let sLatLng = getLocation(selectedDistrict, mosquesCarparksAvailable);
-         mapLocationArea(sLatLng, radius);
+         if (val.length > 0) {
+            let sLatLng = getLocation(val, mosquesCarparksAvailable);
+            if (sLatLng != null) {
+               mapLocationArea(sLatLng, radius);
+            } else {
+               console.log("No mosque found in the location")
+            }
+         }
       })
    }
 })
@@ -310,14 +396,30 @@ document.querySelector('#locate-me-fas').addEventListener('click', function() {
 document.querySelector('#btn-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
    let radius = 1000;
-   let sLatLng = getLocation(val, mosquesCarparksAvailable);
-   mapLocationArea(sLatLng, radius);
+   // let sLatLng = getLocation(val, mosquesCarparksAvailable);
+   // mapLocationArea(sLatLng, radius);
+   if (val.length > 0) {
+      let sLatLng = getLocation(val, mosquesCarparksAvailable);
+      if (sLatLng != null) {
+         mapLocationArea(sLatLng, radius);
+      } else {
+         console.log("No mosque found in the location")
+      }
+   }
 })
 
 document.querySelector('#input-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
    let radius = 1000;
-   let sLatLng = getLocation(val, mosquesCarparksAvailable);
-   mapLocationArea(sLatLng, radius);
+   // let sLatLng = getLocation(val, mosquesCarparksAvailable);
+   // mapLocationArea(sLatLng, radius);
+   if (val.length > 0) {
+      let sLatLng = getLocation(val, mosquesCarparksAvailable);
+      if (sLatLng != null) {
+         mapLocationArea(sLatLng, radius);
+      } else {
+         console.log("No mosque found in the location")
+      }
+   }
 
 })

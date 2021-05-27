@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
 body {
     background-color: whitesmoke;
     margin: 0px;
@@ -5,14 +7,19 @@ body {
 }
 
 #singapore-map {
-    height: 70vh;
+    height: 80vh;
     background-color: #94d0cc;
 }
 
 /* Nav Bar */
+
 .navbar-brand {
   color: #00405d !important;
   font-size: 15px;
+}
+
+.nav-item::after {
+  display: none;
 }
 
 .fas {
@@ -21,8 +28,24 @@ body {
   color: rgb(103, 139, 18);
 }
 
-h1 {
+.fas-popup {
   font-size: 15px;
+  color: black;
+}
+
+h1 {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+}
+
+p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.dropdown-item {
+  font-size: 12px;
 }
 
 /* Mobile-first Responsive Design */
@@ -38,6 +61,11 @@ h1 {
     body {
       background-color: #e4efe7;  
     }
+
+    #singapore-map {
+      height: 70vh;
+    }
+
     h1 {
       font-size: 20px;
     }
@@ -48,20 +76,25 @@ h1 {
     body {
       background-color: #fdfaf6;  
     }
+
     h1 {
-      font-size: 30px;
+      font-size: 25px;
     }
   }
 
 
 /* Footer */
+footer {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 300;
+}
 .prayer-time {
   color: #f55c47;
 }
 
 /* Social Media icons bar - follow their brand colors */
 .social-media {
-  margin: 30px;
+  margin: 20px;
   display: flex;
   justify-content: center;
 }

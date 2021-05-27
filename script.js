@@ -49,7 +49,6 @@ let mosqueIcon = L.icon({
 })
 
 // customer marker for carparks 
-// [Need to find the right coordinates for icon]
 let carparkIcon = L.icon({
    iconUrl: 'images/parking.svg',
    iconSize: [40,40], // size of icon
@@ -65,7 +64,9 @@ let meIcon = L.icon({
    popupAnchor: [-20, -42] // point from which the popup should open relative to the iconAnchor
 })
 
+// ----------------------
 // custom marker for MUIS
+// ----------------------
 let muisIcon = L.icon({
    iconUrl: 'images/muis-map.png',
    iconSize: [50,50], // size of icon
@@ -109,7 +110,7 @@ function mapLocationArea (latLng, radius) {
    map.addLayer(groupMosques);
    map.addLayer(layerSearchArea);
    
-   map.setView(latLng, 15);
+   map.setView(latLng, 16);
 }
 
 // show my current location
@@ -311,7 +312,7 @@ window.addEventListener('DOMContentLoaded', async function () {
    // ------------------------------------------------------------
    // get carparks within radius of mosques
    mosquesCarparks = await getNearbyCarparks(transformedMosques, carparks, radiusKM);
-
+   // update with carpark lots availability for each carpark
    mosquesCarparksAvailable = await refreshMosqueCarparkAvailability(mosquesCarparks, 'https://api.data.gov.sg/v1/transport/carpark-availability')
    console.log(mosquesCarparksAvailable);
 
@@ -396,8 +397,7 @@ document.querySelector('#locate-me-fas').addEventListener('click', function() {
 document.querySelector('#btn-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
    let radius = 1000;
-   // let sLatLng = getLocation(val, mosquesCarparksAvailable);
-   // mapLocationArea(sLatLng, radius);
+
    if (val.length > 0) {
       let sLatLng = getLocation(val, mosquesCarparksAvailable);
       if (sLatLng != null) {
@@ -411,8 +411,7 @@ document.querySelector('#btn-search').addEventListener('click', function () {
 document.querySelector('#input-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
    let radius = 1000;
-   // let sLatLng = getLocation(val, mosquesCarparksAvailable);
-   // mapLocationArea(sLatLng, radius);
+
    if (val.length > 0) {
       let sLatLng = getLocation(val, mosquesCarparksAvailable);
       if (sLatLng != null) {

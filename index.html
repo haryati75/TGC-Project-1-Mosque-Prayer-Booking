@@ -25,16 +25,16 @@
     <!-- *************************** -->
     <!-- Setup Bootstrap navbar here -->
     <!-- *************************** -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-0">
 
         <!-- Display Logo for Small Screen -->
-        <a class="navbar-brand d-md-none d-lg-none" href="index.html">
+        <a class="navbar-brand d-md-none d-lg-none mr-0" href="#">
             <img src="images/mosque-logo.png" alt="Our Mosque Logo - Small">
-            <h1 style="margin-bottom: 0px;">Book Prayer Today</h1>
+            <h1 style="margin: 0px;">Book Prayer Today</h1>
             <p>Find Mosque/Carpark</p>
         </a>
         <!-- Display Logo for Laptop Screen -->
-        <a class="navbar-brand d-none d-md-block d-lg-block" href="index.html">
+        <a class="navbar-brand d-none d-md-block d-lg-block" href="#">
             <img src="images/logo-full-horizontal2.png" alt="Our Mosque Logo - Full Horizontal" height="40">
             <div>
                 <h1 style="margin-bottom: 0px;">Locate & Book your Prayer Today</h1>
@@ -42,9 +42,17 @@
             </div>
         </a>
         <!-- Home Page Icon -->
-        <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-car" id="toggle-carparks-fas"></i></a>
-        <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-mosque" id="toggle-mosques-fas"></i></a>
-        <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-street-view" id="locate-me-fas"></i></a>
+        <div class="stage">
+            <div class="box bounce">
+                <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-car" id="toggle-carparks-fas"></i></a>
+            </div>
+            <div class="box bounce">
+                <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-mosque" id="toggle-mosques-fas"></i></a>
+            </div>
+            <div class="box bounce">
+                <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-street-view" id="locate-me-fas"></i></a>
+            </div>
+        </div>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -68,7 +76,7 @@
                 </li>
                 
             </ul>
-            <form class="form-inline my-2 my-lg-0">
+            <form class="form-inline my-2 my-lg-3">
             <input class="form-control mr-sm-2 form-search" type="search" placeholder="Mosque/District" aria-label="Search" id="input-search" value="">
             <button class="btn btn-outline-success my-2 my-sm-0 form-search" type="submit" id="btn-search">Search</button>
             </form>
@@ -87,35 +95,34 @@
     <!--       Footer Section        -->
     <!-- *************************** -->
     <!-- Singapore Prayer Times, Credits and Social Media -->
-    <footer class="container-fluid">
+    <footer class="my-footer container-fluid">
         <div class="row justify-content-start" id="footer-prayer">
-            <!-- <div class="col-1"></div> -->
-            <div class="col-10">
+            <div class="col-12 d-inline-flex justify-content-start align-items-center p-2">
                 <i class="fas fa-calendar-alt"></i>
-                <h5>Singapore Prayer Times: <span id="prayer-date"></span></h5>
+                <h1>Singapore Prayer Times: <span id="prayer-date"></span></h1>
             </div>
         </div>
-        <div class="row justify-content-start" width="80%" id="prayer-times"></div>
-        <div class="row">
+        <!-- DOM rendering of prayer times -->
+        <!-- <div class="row justify-content-start" width="80%" id="prayer-times"></div> -->
+        <div class="row" id="prayer-times"></div>
+        <hr style="margin-bottom:0;">
+        <div class="row p-2">
             <div class="col-sm footer-credit">
                 <i class="fas fa-bullhorn"></i>
-                <h5>Credits:</h5>
-                <p>Community data from: Muis, MuslimSG, OurMasjidSG</p>
-                <p>Public data from: Data.gov.sg, HDB, URA, OneMapSG API</p>
+                <h1>Credits:</h1>
+                <p><b>Community</b> data from: Muis, MuslimSG, OurMasjidSG</p>
+                <p><b>Public</b> data from: Data.gov.sg, HDB, URA, OneMapSG API</p>
                 <hr>
                 <p>Developed by: Haryati Hassan</p>
-                <p>For Education Purpose: Trent Global College (SG), TGC12 Project 1, May 2021</p>
+                <p>For <b>Education</b> Purpose: <em>Trent Global College (SG)</em>, TGC12 Project 1, May 2021</p>
                 <hr>
             </div>
 
             <div class="col social-media ms-auto">
-                <img src="images/muslimsg-logo.png" alt="MuslimSG Logo" width="180px" height="40px" margin="0 20"> 
+                <img src="images/muslimsg-logo.png" alt="MuslimSG Logo" width="160px" height="35px" margin="0 auto"> 
                 <a href="https://www.facebook.com/MuslimSG/"><i class="fab fa-facebook-square fa-facebook"></i></a>
                 <a href="https://www.instagram.com/muslim.sg/"><i class="fab fa-instagram-square fa-instagram"></i></a>
                 <a href="https://www.youtube.com/channel/UCxfs0-rD8VluFXY2Jc5qiTw"><i class="fab fa-youtube-square fa-youtube"></i></a>
-                <!-- <a href=""><i class="fab fa-twitter-square fa-twitter"></i></a>
-                <a href=""><i class="fab fa-whatsapp-square fa-whatsapp"></i></a> -->
-
             </div>
         </div>
     </footer>

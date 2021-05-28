@@ -22,6 +22,9 @@ function getMosquesDistricts (arrMosques, arrDistrictCodes) {
     let transformedMosques = arrMosques.map( (m) => {
         m['postal_code'] = m.address.slice(-6);
         m['sector_code'] = m.address.slice(-6,-4);
+        m['postal_sector'] = "";
+        m['general_location'] = "";
+        m['postal_district'] = "";
 
         for (let dc of arrDistrictCodes) {
             if (dc.postal_sector.includes(m.sector_code)) {
@@ -29,7 +32,7 @@ function getMosquesDistricts (arrMosques, arrDistrictCodes) {
                 m['general_location'] = dc.general_location;
                 m['postal_district'] = dc.postal_district;
                 break;
-            }
+            } 
         }
         return m;
     })

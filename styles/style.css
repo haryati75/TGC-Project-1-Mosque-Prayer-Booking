@@ -4,6 +4,19 @@ body {
     background-color: whitesmoke;
     margin: 0px;
     padding: 0px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+h1 {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  font-size: 0.8rem;
 }
 
 #singapore-map {
@@ -11,91 +24,101 @@ body {
     background-color: #94d0cc;
 }
 
-/* Nav Bar */
-
-.navbar-brand {
-  color: #00405d !important;
-  font-size: 15px;
+.marker-popup h1 {
+  font-weight: 700;
+  font-size: 1.1rem;
 }
 
-.nav-item::after {
-  display: none;
+.marker-popup p {
+  font-size: 0.9rem;
+}
+
+/* -------------------------------------------------- */
+/* Nav Bar                                            */
+/* -------------------------------------------------- */
+.navbar-brand {
+  color: #00405d !important;
+}
+
+.nav-link {
+  font-size: 1rem;
 }
 
 .fas {
   font-size: 30px;
-  padding: 5px;
+  padding: 8px;
   color: rgb(103, 139, 18);
 }
 
+/* Fontawesome in Leaflet marker popups */
 .fas-popup {
   font-size: 15px;
   color: black;
 }
 
-h1 {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 300;
-  font-size: 15px;
+.dropdown-item {
+  font-size: 0.8rem;
 }
 
-p {
-  margin-top: 0 !important;
+/* -------------------------------------------------- */
+/* Animation on Home Icons                            */
+/* -------------------------------------------------- */
+.stage {
+  /* border-bottom: 1px dashed blue; */
+  /* border-top: 1px dashed blue; */
+  display: flex;
+  align-items: center;
+  height: 60px;
+}
+
+.box {
+  align-self: flex-end;
+  /* border: 1px solid red; */
+  height: 40px;
+  width: 100%;
+  margin: 0 auto 0 auto;
+  animation-duration: 2s;
+  animation-iteration-count: 4;
+  transform-origin: bottom;
+}
+
+.bounce:hover {
+  animation-name: bounce;
+  animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+
+@keyframes bounce {
+  0%   { transform: scale(1,1) translateY(0); }
+  10%  { transform: scale(1.1, 0.9) translateY(0); }
+  30%  { transform: scale(0.9, 1.1) translateY(-20px); }
+  50%  { transform: scale(1.05,0.95) translateY(0); }
+  57%  { transform: scale(1,1) translateY(-3px); }
+  64%  { transform: scale(1,1) translateY(-5px); }
+  100% { transform: scale(1,1) translateY(0); }
+}
+
+/* -------------------------------------------------- */
+/* Footer styles                                      */
+/* -------------------------------------------------- */
+/* Footer */
+.my-footer p {
+  font-weight: 300;
+}
+
+.my-footer h1 {
   margin-bottom: 0 !important;
 }
 
-.dropdown-item {
-  font-size: 12px;
-}
-
-/* Mobile-first Responsive Design */
-/* Ipad */
-@media screen and (min-width:768px) {
-    body {
-      background-color: #faf1e6;  
-    }
-  }
-  
-  /* bigger tablet  */
-  @media screen and (min-width:992px) {
-    body {
-      background-color: #e4efe7;  
-    }
-
-    #singapore-map {
-      height: 70vh;
-    }
-
-    h1 {
-      font-size: 20px;
-    }
-  }
-  
-  /* laptop */
-  @media screen and (min-width:1200px) {
-    body {
-      background-color: #fdfaf6;  
-    }
-
-    h1 {
-      font-size: 25px;
-    }
-  }
-
-
-/* Footer */
-footer {
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 300;
-}
 .prayer-time {
   color: #f55c47;
 }
-
+/* -------------------------------------------------- */
 /* Social Media icons bar - follow their brand colors */
+/* -------------------------------------------------- */
 .social-media {
-  margin: 20px;
+  margin: auto 0;
   display: flex;
+  align-self: center;
   justify-content: center;
 }
 
@@ -123,12 +146,48 @@ footer {
   color: #3f729b;
 }
 
-/* Twitter */
-.fa-twitter {
-  color: #55acee;
+/* -------------------------------------------------- */
+/* Mobile-first Responsive Design                     */
+/* -------------------------------------------------- */
+/* Ipad */
+@media screen and (min-width:768px) {
+  body {
+    background-color: #faf1e6;  
+  }
+  .stage {
+    width: 200px;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+
+  .dropdown-item {
+    font-size: 1rem;
+  }
 }
 
-/* Whatsapp */
-.fa-whatsapp {
-  color: #43d854;
+/* bigger tablet  */
+@media screen and (min-width:992px) {
+  body {
+    background-color: #e4efe7;  
+  }
+
+  #singapore-map {
+    height: 70vh;
+  }
+}
+
+/* laptop */
+@media screen and (min-width:1200px) {
+  body {
+    background-color: #fdfaf6;  
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
 }

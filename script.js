@@ -63,21 +63,24 @@ let meIcon = L.icon({
    iconAnchor: [41,45], // point of the icon which will correspond to marker's location
    popupAnchor: [-20, -42] // point from which the popup should open relative to the iconAnchor
 })
+// locate and plot current location
+showCurrentLocation();
 
 // ----------------------
 // custom marker for MUIS
 // ----------------------
 let muisIcon = L.icon({
    iconUrl: 'images/muis-map.png',
-   iconSize: [50,50], // size of icon
-   iconAnchor: [24, 48], // point of the icon which will correspond to marker's location
-   popupAnchor: [-1, -40]
+   iconSize: [70,70], // size of icon
+   iconAnchor: [40, 70], // point of the icon which will correspond to marker's location
+   popupAnchor: [-3, -68]
 })
 
+// plot MUIS marker on map
 let muis = [1.3428713, 103.8523594] 
 let markerMuis = L.marker(muis, {icon: muisIcon});
 markerMuis.addTo(map);
-markerMuis.bindPopup('Majlis Ugama Islam Singapura is here').openPopup();
+markerMuis.bindPopup('Majlis Ugama Islam Singapura is here.');
 
 // ------------------------------------------------------------
 // Functions: Toggling Layers and Groups, Finding locations
@@ -121,27 +124,24 @@ function showCurrentLocation() {
 }
 
 function onLocationFound(e) {
-
    // clear previous locate me marker-layer
    map.removeLayer(layerLocateMe);
 
    // let radius = e.accuracy;
    let radius = 500; // within 2km 
-   // let me = L.marker(e.latlng);
    let me = L.marker(e.latlng, {icon: meIcon});
-   // me2.addTo(map)
    me.addTo(layerLocateMe);
 
    me.bindPopup(`<i class="fas fas-popup fa-street-view"></i>You are within ${(radius/1000)} km from this point`).openPopup();
    L.circle(e.latlng, radius).addTo(layerLocateMe);
-
    layerLocateMe.addTo(map)
 }
 
 // show error message if current location is not found
 function onLocationError(e) {
-   alert(e.message);
+   alert(e.message, "** Current Location not detected.");
 }
+
 // ------------------------------------------------------------
 // Functions: Plotting of markers using Leaflet JS 
 // ------------------------------------------------------------
@@ -155,27 +155,28 @@ function plotMosques(showRadius) {
          
       // mosque popup
       mosqueMarker.bindPopup(`
-      <i class="fas fa-mosque"></i>
-      <h1>Masjid ${m.mosque}</h1>
-      <p><i class="fas fas-popup fa-map-marked-alt"></i>${m.address}</p>
-      <p><i class="fas fas-popup fa-phone-alt"></i>${m.telephone}</p>
+      <div class="marker-popup">
+         <i class="fas fa-mosque"></i>
+         <h1>Masjid ${m.mosque}</h1>
+         <p><i class="fas fas-popup fa-map-marked-alt"></i>${m.address}</p>
+         <p><i class="fas fas-popup fa-phone-alt"></i>${m.telephone}</p>
 
-      <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="me@mail.com">
-      <small style="padding-bottom: 10px" id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-      <div class="btn-group mt-10">
-        <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Book a Prayer Today
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Zuhur</a>
-          <a class="dropdown-item" href="#">Asar</a>
-          <a class="dropdown-item" href="#">Maghrib</a>
-          <a class="dropdown-item" href="#">Isyak</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Friday</a>
-        </div>
+         <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="me@mail.com">
+         <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
+         <div class="btn-group mt-10">
+            <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               Book a Prayer Today
+            </button>
+            <div class="dropdown-menu">
+               <a class="dropdown-item" href="#">Zuhur</a>
+               <a class="dropdown-item" href="#">Asar</a>
+               <a class="dropdown-item" href="#">Maghrib</a>
+               <a class="dropdown-item" href="#">Isyak</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" href="#">Friday</a>
+            </div>
+         </div>
       </div>
-
       `);
    
       if (showRadius && m.carparks_nearby.length > 0) {
@@ -201,6 +202,7 @@ function plotCarparks() {
          cMarker.addTo(groupCarparks);
          cMarker.addTo(markerCluster);
          cMarker.bindPopup(`
+         <div class="marker-popup">
             <i class="fas fa-parking"></i>
             <h1>Carpark near Masjid ${m.mosque}</h1>
             <p><i class="far fas-popup fa-map"></i> ${c.address} - ${c.carpark_no}</p>
@@ -208,21 +210,22 @@ function plotCarparks() {
             <p><i class="fas fas-popup fa-car-side"></i>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%)</p>
             <p><i class="fas fas-popup fa-history"></i>Last updated: ${c.lots_updated_on}</p>
 
-            <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="me@mail.com">
+            <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
             <div class="btn-group mt-10">
-            <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               Book a Prayer Today
-            </button>
-            <div class="dropdown-menu">
-               <a class="dropdown-item" href="#">Zuhur</a>
-               <a class="dropdown-item" href="#">Asar</a>
-               <a class="dropdown-item" href="#">Maghrib</a>
-               <a class="dropdown-item" href="#">Isyak</a>
-               <div class="dropdown-divider"></div>
-               <a class="dropdown-item" href="#">Friday</a>
+               <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Book a Prayer Today
+               </button>
+               <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Zuhur</a>
+                  <a class="dropdown-item" href="#">Asar</a>
+                  <a class="dropdown-item" href="#">Maghrib</a>
+                  <a class="dropdown-item" href="#">Isyak</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Friday</a>
+               </div>
             </div>
-            </div>
+         </div>
          `);
       }
    }
@@ -282,7 +285,6 @@ function loadDistrictDropdown(arrObjDistricts) {
 // *****************************************
 // wait for the DOM to be ready before loading
 window.addEventListener('DOMContentLoaded', async function () {
-
    // *********************************
    // LOAD Data
    // *********************************
@@ -328,8 +330,6 @@ window.addEventListener('DOMContentLoaded', async function () {
    // map.removeLayer(groupMosques);
    map.removeLayer(groupCarparks);
 
-   showCurrentLocation();
-
    // create listeners for rendered dropdown inside DOMContentLoaded
    for (let district of document.querySelectorAll(".district")) {
       district.addEventListener('click', function(e){
@@ -337,17 +337,19 @@ window.addEventListener('DOMContentLoaded', async function () {
          let radius = 1000;
          if (val.length > 0) {
             let sLatLng = getLocation(val, mosquesCarparksAvailable);
-            if (sLatLng != null) {
+            if (sLatLng != undefined) {
                mapLocationArea(sLatLng, radius);
             } else {
-               console.log("No mosque found in the location")
+               alert("No mosque found in the location: ", val);
             }
          }
       })
    }
 })
 
-// refresh every 3 minutes (1s = 1000) 
+// *********************************************
+// REFRESH carpark availability every 3 minutes
+// *********************************************
 setInterval(async function() {
    
    // carpark availability
@@ -362,7 +364,7 @@ setInterval(async function() {
    console.log('Interval: ', today);
    console.log(mosquesCarparksAvailable);
 
-}, 180000)
+}, 180000) // 1s = 1000
 
 // *********************************
 // TOGGLE clicks on navbar icons
@@ -403,7 +405,7 @@ document.querySelector('#btn-search').addEventListener('click', function () {
       if (sLatLng != null) {
          mapLocationArea(sLatLng, radius);
       } else {
-         console.log("No mosque found in the location")
+         alert("No mosque found in the location: ", val);
       }
    }
 })
@@ -411,13 +413,12 @@ document.querySelector('#btn-search').addEventListener('click', function () {
 document.querySelector('#input-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
    let radius = 1000;
-
    if (val.length > 0) {
       let sLatLng = getLocation(val, mosquesCarparksAvailable);
       if (sLatLng != null) {
          mapLocationArea(sLatLng, radius);
       } else {
-         console.log("No mosque found in the location")
+         alert("No mosque found in the location: ", val);
       }
    }
 

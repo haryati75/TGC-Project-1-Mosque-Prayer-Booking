@@ -7,8 +7,12 @@ body {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+#singapore-map {
+  height: 80vh;
+  background-color: #94d0cc;
+}
+
 h1 {
-  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 400;
   font-size: 1rem;
 }
@@ -17,11 +21,6 @@ p {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   font-size: 0.8rem;
-}
-
-#singapore-map {
-    height: 80vh;
-    background-color: #94d0cc;
 }
 
 .marker-popup h1 {
@@ -44,20 +43,21 @@ p {
   font-size: 1rem;
 }
 
+.dropdown-item {
+  font-size: 0.8rem;
+}
+
+/* icon colors and size */
 .fas {
   font-size: 30px;
   padding: 8px;
-  color: rgb(103, 139, 18);
+  color: #678B12;
 }
 
-/* Fontawesome in Leaflet marker popups */
+/* Fontawesome icons in Leaflet marker popups */
 .fas-popup {
   font-size: 15px;
   color: black;
-}
-
-.dropdown-item {
-  font-size: 0.8rem;
 }
 
 /* -------------------------------------------------- */
@@ -112,14 +112,15 @@ p {
 .prayer-time {
   color: #f55c47;
 }
+
 /* -------------------------------------------------- */
 /* Social Media icons bar - follow their brand colors */
 /* -------------------------------------------------- */
 .social-media {
   margin: auto 0;
   display: flex;
-  align-self: center;
-  justify-content: center;
+  align-self: center; /* vertical */
+  justify-content: center; /* horizontal */
 }
 
 .fab {

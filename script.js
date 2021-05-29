@@ -40,7 +40,6 @@ layerLocateMe.addTo(map);
 // -----------------------------------
 // create custom marker icons for map
 // -----------------------------------
-// customer marker for mosques
 let mosqueIcon = L.icon({
    iconUrl: 'images/locate-mosque.png',
    iconSize: [50,50], // size of icon
@@ -48,7 +47,6 @@ let mosqueIcon = L.icon({
    popupAnchor: [-1, -40]
 })
 
-// customer marker for carparks 
 let carparkIcon = L.icon({
    iconUrl: 'images/parking.svg',
    iconSize: [40,40], // size of icon
@@ -80,7 +78,59 @@ let muisIcon = L.icon({
 let muis = [1.3428713, 103.8523594] 
 let markerMuis = L.marker(muis, {icon: muisIcon});
 markerMuis.addTo(map);
-markerMuis.bindPopup('Majlis Ugama Islam Singapura is here.');
+markerMuis.bindPopup(`
+   <div class="marker-popup">
+      <div class="d-flex flex-row align-items-center">
+         <div><img src="images/muis-logo-small.png" alt="Muis Logo"/></div>
+         <div class="mx-auto align-self-center"><h1><a href="https://www.muis.gov.sg">Majlis Ugama Islam Singapura</a></h1></div>
+      </div>
+      <p><i class="fas fas-popup fa-map-marked-alt"></i>273 Braddell Road,
+      Singapore 579702</p>
+      <p><i class="fas fas-popup fa-phone-alt"></i>(+65) 6359 1199</p>
+      <p><i class="fas fas-popup fa-envelope-open-text"></i>info@muis.gov.sg</p>
+      <hr class="my-2">
+      <div class="d-flex flex-row align-items-center">
+         <img src="images/muis-building-small.jpg" alt="Muis Building"/>
+         <div class="col mx-1 text-align-right">
+            <p><em>OURMASJID</em> is a community crowdfunding initiative supported by Muis to rally the community to provide funding support for mosque operations and staff.</p>
+            <p class="align-self-center"><a href="https://ourmasjid.sg"><img src="images/logo-full-horizontal-small.png" alt="OurMasjid.sg Logo"/></a></p>
+         </div>
+      </div>
+   </div>
+`);
+
+// adding Leaflet control for layers in Map
+let baseLayers = {
+   'Locate Me' : layerLocateMe,
+   'Locate Search' : layerSearchArea
+}
+
+let overlays = {
+   'Mosques & Carparks' : markerCluster,
+   'Mosques (radius of 0.5km)' : groupMosques,
+   'Carparks only' : groupCarparks
+}
+
+L.control.layers(baseLayers, overlays).addTo(map);
+
+// add watermark: OurMasjid
+L.Control.Watermark = L.Control.extend({
+   onAdd: function(map) {
+      let img = L.DomUtil.create('img');
+      img.src = 'images/logo-full.png';
+      img.style.width = '2.5rem';
+      return img;
+   },
+   onRemove: function(map) {
+      // Do nothing
+   }
+});
+
+L.control.watermark = function(opts) {
+   return new L.Control.Watermark(opts);
+}
+
+L.control.watermark({ position: 'bottomright' }).addTo(map);
 
 // ------------------------------------------------------------
 // Functions: Toggling Layers and Groups, Finding locations
@@ -168,12 +218,12 @@ function plotMosques(showRadius) {
                Book a Prayer Today
             </button>
             <div class="dropdown-menu">
-               <a class="dropdown-item" href="#">Zuhur</a>
-               <a class="dropdown-item" href="#">Asar</a>
-               <a class="dropdown-item" href="#">Maghrib</a>
-               <a class="dropdown-item" href="#">Isyak</a>
+               <a class="dropdown-item dd-prayer" href="#">Zuhur</a>
+               <a class="dropdown-item dd-prayer" href="#">Asar</a>
+               <a class="dropdown-item dd-prayer" href="#">Maghrib</a>
+               <a class="dropdown-item dd-prayer" href="#">Isyak</a>
                <div class="dropdown-divider"></div>
-               <a class="dropdown-item" href="#">Friday</a>
+               <a class="dropdown-item dd-prayer" href="#">Friday</a>
             </div>
          </div>
       </div>
@@ -217,12 +267,12 @@ function plotCarparks() {
                   Book a Prayer Today
                </button>
                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Zuhur</a>
-                  <a class="dropdown-item" href="#">Asar</a>
-                  <a class="dropdown-item" href="#">Maghrib</a>
-                  <a class="dropdown-item" href="#">Isyak</a>
+                  <a class="dropdown-item dd-prayer" href="#">Zuhur</a>
+                  <a class="dropdown-item dd-prayer" href="#">Asar</a>
+                  <a class="dropdown-item dd-prayer" href="#">Maghrib</a>
+                  <a class="dropdown-item dd-prayer" href="#">Isyak</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#">Friday</a>
+                  <a class="dropdown-item dd-prayer" href="#">Friday</a>
                </div>
             </div>
          </div>
@@ -345,6 +395,12 @@ window.addEventListener('DOMContentLoaded', async function () {
          }
       })
    }
+
+   for (let marker of document.querySelectorAll(".dd-prayer")) {
+      marker.addEventListener('click', function(e) {
+         alert("click marker: " + e.target.innerText)
+      })
+   }
 })
 
 // *********************************************
@@ -369,28 +425,34 @@ setInterval(async function() {
 // *********************************
 // TOGGLE clicks on navbar icons
 // *********************************
-document.querySelector('#toggle-mosques-fas').addEventListener('click', function() {
-   map.removeLayer(layerLocateMe);
-   map.removeLayer(layerSearchArea);
+document.querySelector('#toggle-mosques-fas').addEventListener('click', function(e) {
    if (map.hasLayer(groupMosques)) {
       map.removeLayer(groupMosques);
+      this.style.color = "#bdd2b6";
    } else {
       map.addLayer(groupMosques);
+      this.style.color = "#678B12";
    }
 })
 
 document.querySelector('#toggle-carparks-fas').addEventListener('click', function() {
-   map.removeLayer(layerLocateMe);
-   map.removeLayer(layerSearchArea);
    if (map.hasLayer(groupCarparks)) {
       map.removeLayer(groupCarparks);
+      this.style.color = "#bdd2b6";
    } else {
       map.addLayer(groupCarparks);
+      this.style.color = "#678B12";
    }
 })
 
 document.querySelector('#locate-me-fas').addEventListener('click', function() {
-   showCurrentLocation();
+   if (map.hasLayer(layerLocateMe)) {
+      map.removeLayer(layerLocateMe);
+      this.style.color = "#bdd2b6";
+   } else {
+      showCurrentLocation();
+      this.style.color = "#678B12";
+   }
 })
 
 // *********************************
@@ -421,5 +483,11 @@ document.querySelector('#input-search').addEventListener('click', function () {
          alert("No mosque found in the location: ", val);
       }
    }
-
 })
+
+let selectedPrayer = document.querySelectorAll(".dd-prayer")
+for (let p of selectedPrayer) {
+   p.addEventListener('click', function(e) {
+      alert('click me W');
+   })
+}

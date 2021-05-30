@@ -32,10 +32,13 @@ let groupCarparks = L.layerGroup();
 groupMosques.addTo(map);
 groupCarparks.addTo(map);
 
+// create separate layers for search results, mosque-radius, my-location
 let layerSearchArea = L.layerGroup();
 let layerLocateMe = L.layerGroup();
+let layerMosqueRadius = L.layerGroup();
 layerSearchArea.addTo(map);
 layerLocateMe.addTo(map);
+layerMosqueRadius.addTo(map);
 
 // -----------------------------------
 // create custom marker icons for map
@@ -61,6 +64,7 @@ let meIcon = L.icon({
    iconAnchor: [41,45], // point of the icon which will correspond to marker's location
    popupAnchor: [-20, -42] // point from which the popup should open relative to the iconAnchor
 })
+
 // locate and plot current location
 showCurrentLocation();
 
@@ -100,20 +104,17 @@ markerMuis.bindPopup(`
 `);
 
 // adding Leaflet control for layers in Map
-let baseLayers = {
-   'Locate Me' : layerLocateMe,
-   'Locate Search' : layerSearchArea
-}
+let baseLayers = null; 
 
 let overlays = {
    'Mosques & Carparks' : markerCluster,
-   'Mosques (radius of 0.5km)' : groupMosques,
-   'Carparks only' : groupCarparks
+   'Around Mosques' : layerMosqueRadius,
+   'Search Result' : layerSearchArea
 }
 
 L.control.layers(baseLayers, overlays).addTo(map);
 
-// add watermark: OurMasjid
+// add watermark: OurMasjid logo on the map
 L.Control.Watermark = L.Control.extend({
    onAdd: function(map) {
       let img = L.DomUtil.create('img');
@@ -130,55 +131,38 @@ L.control.watermark = function(opts) {
    return new L.Control.Watermark(opts);
 }
 
+// position of the watermark on the map
 L.control.watermark({ position: 'bottomright' }).addTo(map);
 
 // ------------------------------------------------------------
 // Functions: Toggling Layers and Groups, Finding locations
 // ------------------------------------------------------------
 function getLocation(strSearch, allMosques) {
-   let s = strSearch.toLowerCase();
+   let s = strSearch.trim().toLowerCase();
    let result = [];
    for (let m of allMosques) {
 
-      // Search method: Priority of search fields and whether it returns 0, 1 or many result
-      // First Parse: Search Each Mosque
-      // Second Parse: Search Each Mosque's Carpark
-      // 1. Exact match to mosque's postal_code and sector_code
-      // 2. Equal or Partial match to mosque's name
-      // 3. Equal or Partial match to mosque's address
-      // 4. Exact match to mosque's general location
-      // 5. Eaqual or Partial to address of the mosque's first carpark found  
-      // 6. Partial match to mosque's general location
-
-      // criteria #1-4
-      if (m.postal_code === s || m.sector_code === s || m.general_location.toLowerCase() === s || m.mosque.toLowerCase().includes(s) || m.address.toLowerCase().includes(s) ) {
-         console.log("Found ->>", strSearch)
-         console.log(m)
+      // readme.md on the search criteria method
+      if (m.postal_code === s || m.sector_code === s || m.general_location.toLowerCase() === s || m.mosque.toLowerCase().includes(s) || m.address.toLowerCase().includes(s) || m.general_location.toLowerCase().includes(s)) {
          result.push(L.latLng([m.location.latitude, m.location.longitude]));
          continue;
       } else if (m.carparks_nearby.length > 0) {
+
          // find at least 1 carpark's address that match
          for (let c of m.carparks_nearby) {
             if (c.address.toLowerCase().includes(s)) {
-               console.log("Found by Carpark ->>", strSearch)
-               console.log(m)
                result.push(L.latLng([m.location.latitude, m.location.longitude]));
                break; // break from carpark loop and move to next mosque, if any
             }
          }
-      } else if (m.general_location.toLowerCase().includes(s)) {
-         console.log("Found by District ->>", strSearch)
-         console.log(m.mosque)
-         result.push(L.latLng([m.location.latitude, m.location.longitude]));
-      }
+      } 
    }
 
-   // Bubble-sort Method:
-   // -------------------
-   // if > 2 latLngs coords, sort the order of the latLngs
-   // into order of Longitude to avoid criss-cross polygon
-   sortBubble(result);
-
+   // minimise criss-cross polygon
+   if (result.length > 2) {
+      sortLatLngBubble(result);
+   }
+   
    return result;
 }
 
@@ -213,8 +197,6 @@ function plotSearchMosquesPolygon (latLngs) {
 
    } else {
 
-      console.log(latLngs)
-
       // else, draw a polygon
       let polygon = L.polygon(latLngs, {
          color: 'red',
@@ -237,13 +219,12 @@ function showCurrentLocation() {
 
 function onLocationFound(e) {
    // clear previous locate me marker-layer
+   layerLocateMe.clearLayers();
    map.removeLayer(layerLocateMe);
 
-   // let radius = e.accuracy;
-   let radius = 500; // within 2km 
+   let radius = e.accuracy;
    let me = L.marker(e.latlng, {icon: meIcon});
    me.addTo(layerLocateMe);
-
    me.bindPopup(`<i class="fas fas-popup fa-street-view"></i>You are within ${(radius/1000)} km from this point`).openPopup();
    L.circle(e.latlng, radius).addTo(layerLocateMe);
    layerLocateMe.addTo(map)
@@ -251,6 +232,11 @@ function onLocationFound(e) {
 
 // show error message if current location is not found
 function onLocationError(e) {
+   // clear previous locate me marker-layer
+   if (map.hasLayer(layerLocateMe)) {
+      layerLocateMe.clearLayers();
+      map.removeLayer(layerLocateMe);
+   }
    alert(e.message, "** Current Location not detected.");
 }
 
@@ -258,7 +244,7 @@ function onLocationError(e) {
 // Functions: Plotting of markers using Leaflet JS 
 // ------------------------------------------------------------
 // plot mosque markers to map
-function plotMosques(showRadius) {
+function plotMosqueMarkers() {
    for (let m of mosquesCarparksAvailable) {
       let mosqueLatLng = L.latLng([m.location.latitude, m.location.longitude]);
       let mosqueMarker = L.marker(mosqueLatLng, {icon: mosqueIcon});
@@ -268,11 +254,15 @@ function plotMosques(showRadius) {
       // mosque popup
       mosqueMarker.bindPopup(`
       <div class="marker-popup">
-         <i class="fas fa-mosque"></i>
-         <h1>Masjid ${m.mosque}</h1>
+         <div class="d-flex flex-row align-items-end mx-auto">
+            <i class="fas fa-mosque"></i>
+            <h1>Masjid ${m.mosque}</h1>
+         </div>
+
          <p><i class="fas fas-popup fa-map-marked-alt"></i>${m.address}</p>
          <p><i class="fas fas-popup fa-phone-alt"></i>${m.telephone}</p>
-         <p>District: ${m.general_location}</p>
+         <p><i class="fas fas-popup fa-draw-polygon"></i>District: ${m.general_location}</p>
+         <hr class="my-2">
 
          <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="me@mail.com">
          <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -291,16 +281,6 @@ function plotMosques(showRadius) {
          </div>
       </div>
       `);
-   
-      if (showRadius && m.carparks_nearby.length > 0) {
-         // mosque cirle radius 
-         L.circle(mosqueLatLng, {
-            color: 'green',
-            fillColor: 'yellow',
-            fillOpacity: 0.5,
-            radius: radiusKM * 1000
-         }).addTo(groupMosques);
-      }
    }
 }
 
@@ -316,13 +296,16 @@ function plotCarparks() {
          cMarker.addTo(markerCluster);
          cMarker.bindPopup(`
          <div class="marker-popup">
-            <i class="fas fa-parking"></i>
-            <h1>Carpark near Masjid ${m.mosque}</h1>
+            <div class="d-flex flex-row align-items-end mx-auto">
+               <i class="fas fa-parking"></i>
+               <h1>Carpark near Masjid ${m.mosque}</h1>
+            </div>
+
             <p><i class="far fas-popup fa-map"></i> ${c.address} - ${c.carpark_no}</p>
             <p><i class="fas fas-popup fa-info-circle"></i>${c.carpark_type}</p>
             <p><i class="fas fas-popup fa-car-side"></i>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%)</p>
             <p><i class="fas fas-popup fa-history"></i>Last updated: ${c.lots_updated_on}</p>
-
+            <hr class="my-2">
             <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="me@mail.com">
             <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
             <div class="btn-group mt-10">
@@ -340,6 +323,22 @@ function plotCarparks() {
             </div>
          </div>
          `);
+      }
+   }
+}
+
+function plotMosqueRadius() {
+   for (let m of mosquesCarparksAvailable) {
+      let mosqueLatLng = L.latLng([m.location.latitude, m.location.longitude]);
+      if (m.carparks_nearby.length > 0) {
+         // mosque cirle radius 
+         mosqueRadius = L.circle(mosqueLatLng, {
+            color: 'green',
+            fillColor: 'yellow',
+            fillOpacity: 0.5,
+            radius: radiusKM * 1000
+         })
+         mosqueRadius.addTo(layerMosqueRadius);
       }
    }
 }
@@ -427,6 +426,7 @@ window.addEventListener('DOMContentLoaded', async function () {
    // ------------------------------------------------------------
    // get carparks within radius of mosques
    mosquesCarparks = await getNearbyCarparks(transformedMosques, carparks, radiusKM);
+
    // update with carpark lots availability for each carpark
    mosquesCarparksAvailable = await refreshMosqueCarparkAvailability(mosquesCarparks, 'https://api.data.gov.sg/v1/transport/carpark-availability')
    // console.log(mosquesCarparksAvailable);
@@ -434,14 +434,19 @@ window.addEventListener('DOMContentLoaded', async function () {
    // *********************************
    // PLOT MAP MARKERS
    // *********************************
-   // mark each mosque to the map with the radius ON
-   plotMosques(true);
+   // mark each mosque to the map with the radius 
+   plotMosqueMarkers();
+   plotMosqueRadius();
 
    // mark the carparks near each mosque
    plotCarparks();
 
-   // map.removeLayer(groupMosques);
+   // hide the Mosque and Carpark markers as these markers are shown by Cluster Marker layer
+   map.removeLayer(groupMosques);
    map.removeLayer(groupCarparks);
+
+   let today = new Date().toJSON();
+   document.querySelector('#carpark-refresh').innerHTML = `<i class="fas fa-history"></i> Last refreshed on ${today}`;
 
    // create listeners for rendered dropdown inside DOMContentLoaded
    for (let district of document.querySelectorAll(".district")) {
@@ -478,13 +483,20 @@ setInterval(async function() {
    mosquesCarparksAvailable = await refreshMosqueCarparkAvailability(mosquesCarparks, 'https://api.data.gov.sg/v1/transport/carpark-availability')
    
    markerCluster.clearLayers(); // clear all the markers
+   groupMosques.clearLayers();
+   groupCarparks.clearLayers();
+
    // replot all the markers
-   plotMosques(false);
+   plotMosqueMarkers();
    plotCarparks();
 
-   let today = new Date().toJSON()
-   // console.log('Interval: ', today);
-   // console.log(mosquesCarparksAvailable);
+   // map.removeLayer(groupMosques);
+   // map.removeLayer(groupCarparks);
+   // map.addLayer(markerCluster);
+
+   let today = new Date().toJSON();
+   document.querySelector('#carpark-refresh').innerHTML = today;
+
 
 }, 180000) // 1s = 1000
 
@@ -511,37 +523,18 @@ document.querySelector('#toggle-carparks-fas').addEventListener('click', functio
    }
 })
 
+// Locate me is not toggle but to serve as getting current location
+// Layer is always turn-on. similar to Muis
 document.querySelector('#locate-me-fas').addEventListener('click', function() {
-   if (map.hasLayer(layerLocateMe)) {
-      map.removeLayer(layerLocateMe);
-      this.style.color = "#bdd2b6";
-   } else {
-      showCurrentLocation();
-      this.style.color = "#678B12";
-   }
+
+   showCurrentLocation();
+
 })
 
 // *********************************
 // SEARCH FUNCTION EVENTS
 // *********************************
 document.querySelector('#btn-search').addEventListener('click', function () {
-   let val = document.getElementById('input-search').value;
-   let radius = 600;
-
-   if (val.length > 0) {
-      let result = getLocation(val, mosquesCarparksAvailable);
-      if (result.length > 1) {
-         plotSearchMosquesPolygon(result);
-      } else if (result.length == 1) {
-         plotSearchMosque(result[0], radius);
-      } else {
-         alert("No mosque found in the location: ", val);
-      }
-   }
-
-})
-
-document.querySelector('#input-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
    let radius = 600;
 

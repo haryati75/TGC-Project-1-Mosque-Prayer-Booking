@@ -77,7 +77,7 @@
                 
             </ul>
             <form class="form-inline my-2 my-lg-3">
-            <input class="form-control mr-sm-2 form-search" type="search" placeholder="Mosque/District" aria-label="Search" id="input-search" value="">
+            <input class="form-control mr-sm-2 form-search" type="search" placeholder="Mosque/District" aria-label="Search" id="input-search" data-toggle="tooltip" data-placement="top" title="Search also by Street, Post Code or Sector Code" value="">
             <button class="btn btn-outline-success my-2 my-sm-0 form-search" type="submit" id="btn-search">Search</button>
             </form>
         </div>
@@ -89,7 +89,6 @@
     <main>
         <div id="singapore-map"></div>
     </main>
-
     
     <!-- *************************** -->
     <!--       Footer Section        -->
@@ -103,9 +102,9 @@
             </div>
         </div>
         <!-- DOM rendering of prayer times -->
-        <!-- <div class="row justify-content-start" width="80%" id="prayer-times"></div> -->
         <div class="row" id="prayer-times"></div>
         <hr style="margin-bottom:0;">
+        <div class="row" id="carpark-refresh"></div>
         <div class="row p-2">
             <div class="col-sm footer-credit">
                 <i class="fas fa-bullhorn"></i>
@@ -126,6 +125,7 @@
             </div>
         </div>
     </footer>
+
 
     <!-- ----------------------------------------------- -->
     <!-- Optional Javascripts here -->
@@ -148,5 +148,11 @@
     <script src="sort.js"></script>
     <script src="mosque_map.js"></script>
     <script src="script.js"></script>
+
+    <script>
+        $(document).ready(function(){
+          $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
 </body>
 </html>

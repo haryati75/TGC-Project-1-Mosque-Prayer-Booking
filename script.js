@@ -57,6 +57,13 @@ let carparkIcon = L.icon({
    popupAnchor: [-1, -38]
 })
 
+let carparkGreyIcon = L.icon({
+   iconUrl: 'images/parking-grey.svg',
+   iconSize: [40,40], // size of icon
+   iconAnchor: [20,40], // point of the icon which will correspond to marker's location
+   popupAnchor: [-1, -38]
+})
+
 // custom marker to locate current location (SVG vector file: can change colours)
 let meIcon = L.icon({
    iconUrl: 'images/locate-me.svg',
@@ -290,8 +297,11 @@ function plotCarparks() {
       for (let c of m.carparks_nearby) {
          // lots available and percentage
          let percentAvailable = parseInt(c.lots_info.lots_available) / parseInt(c.lots_info.total_lots) * 100;
-   
-         let cMarker = L.marker([c.location.latitude, c.location.longitude], {icon: carparkIcon});
+         let isLowAvailability = percentAvailable < 20 ? true : false;
+         let iconLowAvailability = isLowAvailability ? `<i class="fas fa-angle-double-down" style="color: red; font-size: 1rem;"></i>` : '';
+         let markerIcon = isLowAvailability ? carparkGreyIcon : carparkIcon;
+
+         let cMarker = L.marker([c.location.latitude, c.location.longitude], {icon: markerIcon});
          cMarker.addTo(groupCarparks);
          cMarker.addTo(markerCluster);
          cMarker.bindPopup(`
@@ -303,8 +313,8 @@ function plotCarparks() {
 
             <p><i class="far fas-popup fa-map"></i> ${c.address} - ${c.carpark_no}</p>
             <p><i class="fas fas-popup fa-info-circle"></i>${c.carpark_type}</p>
-            <p><i class="fas fas-popup fa-car-side"></i>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%)</p>
-            <p><i class="fas fas-popup fa-history"></i>Last updated: ${c.lots_updated_on}</p>
+            <p><i class="fas fas-popup fa-car-side"></i>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%) ${iconLowAvailability}</p>
+            <p><i class="fas fas-popup fa-history"></i>HDB updated: ${c.lots_updated_on}</p>
             <hr class="my-2">
             <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="me@mail.com">
             <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -444,6 +454,8 @@ window.addEventListener('DOMContentLoaded', async function () {
    // hide the Mosque and Carpark markers as these markers are shown by Cluster Marker layer
    map.removeLayer(groupMosques);
    map.removeLayer(groupCarparks);
+   document.querySelector('#toggle-mosques-fas').style.color = "#bdd2b6";
+   document.querySelector('#toggle-carparks-fas').style.color = "#bdd2b6";
 
    let today = new Date().toJSON();
    document.querySelector('#carpark-refresh').innerHTML = `<i class="fas fa-history"></i> Last refreshed on ${today}`;
@@ -490,13 +502,8 @@ setInterval(async function() {
    plotMosqueMarkers();
    plotCarparks();
 
-   // map.removeLayer(groupMosques);
-   // map.removeLayer(groupCarparks);
-   // map.addLayer(markerCluster);
-
    let today = new Date().toJSON();
    document.querySelector('#carpark-refresh').innerHTML = today;
-
 
 }, 180000) // 1s = 1000
 

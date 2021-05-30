@@ -137,21 +137,56 @@ L.control.watermark({ position: 'bottomright' }).addTo(map);
 // ------------------------------------------------------------
 function getLocation(strSearch, allMosques) {
    let s = strSearch.toLowerCase();
+   let result = [];
    for (let m of allMosques) {
-      // find string in mosque name, postal code, its district and its address
-      if (m.mosque.toLowerCase().includes(s) || m.postal_code === s || m.general_location.toLowerCase().includes(s) || m.address.toLowerCase().includes(s)) {
-         console.log("Found", strSearch)
+
+      // Search method: Priority of search fields and whether it returns 0, 1 or many result
+      // First Parse: Search Each Mosque
+      // Second Parse: Search Each Mosque's Carpark
+      // 1. Exact match to mosque's postal_code and sector_code
+      // 2. Equal or Partial match to mosque's name
+      // 3. Equal or Partial match to mosque's address
+      // 4. Exact match to mosque's general location
+      // 5. Eaqual or Partial to address of the mosque's first carpark found  
+      // 6. Partial match to mosque's general location
+
+      // criteria #1-4
+      if (m.postal_code === s || m.sector_code === s || m.general_location.toLowerCase() === s || m.mosque.toLowerCase().includes(s) || m.address.toLowerCase().includes(s) ) {
+         console.log("Found ->>", strSearch)
          console.log(m)
-         return L.latLng([m.location.latitude, m.location.longitude]);
+         result.push(L.latLng([m.location.latitude, m.location.longitude]));
+         continue;
+      } else if (m.carparks_nearby.length > 0) {
+         // find at least 1 carpark's address that match
+         for (let c of m.carparks_nearby) {
+            if (c.address.toLowerCase().includes(s)) {
+               console.log("Found by Carpark ->>", strSearch)
+               console.log(m)
+               result.push(L.latLng([m.location.latitude, m.location.longitude]));
+               break; // break from carpark loop and move to next mosque, if any
+            }
+         }
+      } else if (m.general_location.toLowerCase().includes(s)) {
+         console.log("Found by District ->>", strSearch)
+         console.log(m.mosque)
+         result.push(L.latLng([m.location.latitude, m.location.longitude]));
       }
    }
-   return null;
+
+   // Bubble-sort Method:
+   // -------------------
+   // if > 2 latLngs coords, sort the order of the latLngs
+   // into order of Longitude to avoid criss-cross polygon
+   sortBubble(result);
+
+   return result;
 }
 
-function mapLocationArea (latLng, radius) {
+// draw a circle around mosque marker if only one mosque found
+function plotSearchMosque (latLng, radius) {
+   // clear the search layer and remove from map
    layerSearchArea.clearLayers();
    map.removeLayer(layerSearchArea);
-   map.removeLayer(groupCarparks);
 
    L.circle(latLng, {
       color: 'red',
@@ -159,11 +194,38 @@ function mapLocationArea (latLng, radius) {
       fillOpacity: 0.3,
       radius: radius
    }).addTo(layerSearchArea);
-      
-   map.addLayer(groupMosques);
+
    map.addLayer(layerSearchArea);
-   
    map.setView(latLng, 16);
+}
+
+// draw a polyline or polygon if more than one mosque found
+function plotSearchMosquesPolygon (latLngs) {
+   // clear the search layer and remove from map
+   layerSearchArea.clearLayers();
+   map.removeLayer(layerSearchArea);
+
+   // draw a polyline if 2 latLngs only
+   if (latLngs.length == 2) {
+      let polyline = L.polyline(latLngs, { color: 'red' }).addTo(layerSearchArea);
+
+      map.fitBounds(polyline.getBounds());
+
+   } else {
+
+      console.log(latLngs)
+
+      // else, draw a polygon
+      let polygon = L.polygon(latLngs, {
+         color: 'red',
+         fillColor: 'pink',
+         fillOpacity: 0.3,
+      }).addTo(layerSearchArea);
+
+      map.fitBounds(polygon.getBounds());
+   }
+
+   map.addLayer(layerSearchArea);
 }
 
 // show my current location
@@ -210,6 +272,7 @@ function plotMosques(showRadius) {
          <h1>Masjid ${m.mosque}</h1>
          <p><i class="fas fas-popup fa-map-marked-alt"></i>${m.address}</p>
          <p><i class="fas fas-popup fa-phone-alt"></i>${m.telephone}</p>
+         <p>District: ${m.general_location}</p>
 
          <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="me@mail.com">
          <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -366,7 +429,7 @@ window.addEventListener('DOMContentLoaded', async function () {
    mosquesCarparks = await getNearbyCarparks(transformedMosques, carparks, radiusKM);
    // update with carpark lots availability for each carpark
    mosquesCarparksAvailable = await refreshMosqueCarparkAvailability(mosquesCarparks, 'https://api.data.gov.sg/v1/transport/carpark-availability')
-   console.log(mosquesCarparksAvailable);
+   // console.log(mosquesCarparksAvailable);
 
    // *********************************
    // PLOT MAP MARKERS
@@ -384,11 +447,14 @@ window.addEventListener('DOMContentLoaded', async function () {
    for (let district of document.querySelectorAll(".district")) {
       district.addEventListener('click', function(e){
          let val = e.target.innerText;
-         let radius = 1000;
+         let radius = 600;
+
          if (val.length > 0) {
-            let sLatLng = getLocation(val, mosquesCarparksAvailable);
-            if (sLatLng != undefined) {
-               mapLocationArea(sLatLng, radius);
+            let result = getLocation(val, mosquesCarparksAvailable);
+            if (result.length > 1) {
+               plotSearchMosquesPolygon(result, radius);
+            } else if (result.length == 1) {
+               plotSearchMosque(result[0], radius);
             } else {
                alert("No mosque found in the location: ", val);
             }
@@ -396,11 +462,11 @@ window.addEventListener('DOMContentLoaded', async function () {
       })
    }
 
-   for (let marker of document.querySelectorAll(".dd-prayer")) {
-      marker.addEventListener('click', function(e) {
-         alert("click marker: " + e.target.innerText)
-      })
-   }
+   // for (let marker of document.querySelectorAll(".dd-prayer")) {
+   //    marker.addEventListener('click', function(e) {
+   //       alert("click marker: " + e.target.innerText)
+   //    })
+   // }
 })
 
 // *********************************************
@@ -417,8 +483,8 @@ setInterval(async function() {
    plotCarparks();
 
    let today = new Date().toJSON()
-   console.log('Interval: ', today);
-   console.log(mosquesCarparksAvailable);
+   // console.log('Interval: ', today);
+   // console.log(mosquesCarparksAvailable);
 
 }, 180000) // 1s = 1000
 
@@ -460,34 +526,40 @@ document.querySelector('#locate-me-fas').addEventListener('click', function() {
 // *********************************
 document.querySelector('#btn-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
-   let radius = 1000;
+   let radius = 600;
 
    if (val.length > 0) {
-      let sLatLng = getLocation(val, mosquesCarparksAvailable);
-      if (sLatLng != null) {
-         mapLocationArea(sLatLng, radius);
+      let result = getLocation(val, mosquesCarparksAvailable);
+      if (result.length > 1) {
+         plotSearchMosquesPolygon(result);
+      } else if (result.length == 1) {
+         plotSearchMosque(result[0], radius);
       } else {
          alert("No mosque found in the location: ", val);
       }
    }
+
 })
 
 document.querySelector('#input-search').addEventListener('click', function () {
    let val = document.getElementById('input-search').value;
-   let radius = 1000;
+   let radius = 600;
+
    if (val.length > 0) {
-      let sLatLng = getLocation(val, mosquesCarparksAvailable);
-      if (sLatLng != null) {
-         mapLocationArea(sLatLng, radius);
+      let result = getLocation(val, mosquesCarparksAvailable);
+      if (result.length > 1) {
+         plotSearchMosquesPolygon(result);
+      } else if (result.length == 1) {
+         plotSearchMosque(result[0], radius);
       } else {
          alert("No mosque found in the location: ", val);
       }
    }
 })
 
-let selectedPrayer = document.querySelectorAll(".dd-prayer")
-for (let p of selectedPrayer) {
-   p.addEventListener('click', function(e) {
-      alert('click me W');
-   })
-}
+// let selectedPrayer = document.querySelectorAll(".dd-prayer")
+// for (let p of selectedPrayer) {
+//    p.addEventListener('click', function(e) {
+//       alert('click me W');
+//    })
+// }

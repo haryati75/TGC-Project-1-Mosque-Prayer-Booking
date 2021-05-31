@@ -340,17 +340,35 @@ function plotMosqueRadius() {
 // ------------------------------------------------------------
 // Book Prayer Actions: Dropdown button on each marker
 // ------------------------------------------------------------
-function popupDropdownClick(mosque, prayerSession){
+function popupDropdownClick(mosque, prayerSession) {
    document.querySelector('#booked-mosque-time').innerHTML = `
       <i class="fas fa-mosque"></i>Masjid ${mosque}<br>
       <i class="fas fa-calendar-alt"></i>Today ${getToday()} for ${prayerSession}`;
+
+   let email = document.querySelector('#congregant-email').value;
+   if (email.length > 0) {
+      document.querySelector('#modal-title-booking').innerHTML = "Demo Only - Booking Complete";
+      document.querySelector('#booked-email').innerHTML = `
+         <p>A QR Code has been sent to:</p>
+         <p><i class="fas fa-envelope-open-text"></i>${email}</p>
+         <img src="images/qrcode-small.png" alt="Email QR Code" max-width="150px">
+      `;
+   } else {
+      document.querySelector('#modal-title-booking').innerHTML = "Error - Email Required";
+      document.querySelector('#booked-email').innerHTML = `
+         <i class="fas fa-envelope-open-text" style="color:red;"></i>Please enter your email.
+      `;
+   }
+
+   
 }
 
 // Prepare HTML for Book Prayer Dropdown button at mosque/carpark markers,
 // with Prayer Sessions as dropdown-items
 function bindBookPrayer(mosque) {
+ 
    let strHTML = `
-      <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="me@mail.com">
+      <input type="email" class="form-control" id="congregant-email" placeholder="me@mail.com">
       <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
       <div class="btn-group mt-10">
          <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -361,11 +379,11 @@ function bindBookPrayer(mosque) {
    let datePrayerInfo = getPrayerInfoByDate(getToday(), prayerTimes);
    let sessionsHTML = ""
    for (let s of datePrayerInfo.schedule.slice(2)) {
-      sessionsHTML += `<a class="dropdown-item dd-prayer" data-toggle="modal" href="#book-complete" onclick="popupDropdownClick('${mosque}','${s.session} | ${s.time}')">${s.session} | ${s.time}</a>`
+      sessionsHTML += `<a class="dropdown-item dd-prayer" data-toggle="modal" href="#book-confirm" onclick="popupDropdownClick('${mosque}','${s.session} | ${s.time}')">${s.session} | ${s.time}</a>`
    }
    strHTML += sessionsHTML + `
             <div class="dropdown-divider"></div>
-               <a class="dropdown-item dd-prayer" data-toggle="modal" href="#book-complete" onclick="popupDropdownClick('${mosque}','Friday')">Friday</a>
+               <a class="dropdown-item dd-prayer" data-toggle="modal" href="#book-confirm" onclick="popupDropdownClick('${mosque}','Friday')">Friday</a>
             </div>
          </div>
       `;
@@ -602,5 +620,9 @@ document.querySelector('#btn-search').addEventListener('click', function () {
          alert("No mosque found in the location: ", val);
       }
    }
+})
+
+document.querySelector('#book-confirm').addEventListener('shownbsmodal', function() {
+   document.querySelector('#congregant-email').trigger('focus');
 })
 

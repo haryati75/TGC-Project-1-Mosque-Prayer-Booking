@@ -127,21 +127,24 @@
         </div>
     </footer>
 
-    <!-- Booking Success Message -->
-    <div class="modal fade" id="book-complete" tabindex="-1" role="dialog">
+    <!-- Booking Confirmation -->
+    <div class="modal fade" id="book-confirm" tabindex="-1" role="dialog">
         <div class="modal-dialog">
         
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Booking Complete (Demo Only)</h5>
+                    <h5 class="modal-title" id="modal-title-booking"></h5>
                 </div>
                 <div class="modal-body">
-                    <p>You have successfully selected a prayer session at a mosque.</p>
+                    <p>You have selected:</p>
                     <p id="booked-mosque-time"></p>
+                    <hr>
+                    <div id="booked-email"></div>
                 </div>
+                
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

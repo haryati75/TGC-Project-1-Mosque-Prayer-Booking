@@ -110,6 +110,9 @@ markerMuis.bindPopup(`
    </div>
 `);
 
+// -----------------------------------
+// create layer controls on map
+// -----------------------------------
 // adding Leaflet control for layers in Map
 let baseLayers = null; 
 
@@ -121,7 +124,9 @@ let overlays = {
 
 L.control.layers(baseLayers, overlays).addTo(map);
 
+// ----------------------------------------
 // add watermark: OurMasjid logo on the map
+// ----------------------------------------
 L.Control.Watermark = L.Control.extend({
    onAdd: function(map) {
       let img = L.DomUtil.create('img');
@@ -217,9 +222,11 @@ function plotSearchMosquesPolygon (latLngs) {
    map.addLayer(layerSearchArea);
 }
 
+// -------------------------
 // show my current location
+// -------------------------
 function showCurrentLocation() {
-   map.locate({setView: true, maxZoom: 13});
+   map.locate({setView: true, maxZoom: 16});
    map.on('locationfound', onLocationFound);
    map.on('locationerror', onLocationError);
 }
@@ -295,11 +302,15 @@ function plotMosqueMarkers() {
 function plotCarparks() {
    for (let m of mosquesCarparksAvailable) {
       for (let c of m.carparks_nearby) {
+
          // lots available and percentage
          let percentAvailable = parseInt(c.lots_info.lots_available) / parseInt(c.lots_info.total_lots) * 100;
          let isLowAvailability = percentAvailable < 20 ? true : false;
          let iconLowAvailability = isLowAvailability ? `<i class="fas fa-angle-double-down" style="color: red; font-size: 1rem;"></i>` : '';
          let markerIcon = isLowAvailability ? carparkGreyIcon : carparkIcon;
+
+         // HDB last updated on
+         let syncHDBDate = formatDateTimeSG("HDB updated: ", new Date(c.lots_updated_on));
 
          let cMarker = L.marker([c.location.latitude, c.location.longitude], {icon: markerIcon});
          cMarker.addTo(groupCarparks);
@@ -314,7 +325,7 @@ function plotCarparks() {
             <p><i class="far fas-popup fa-map"></i> ${c.address} - ${c.carpark_no}</p>
             <p><i class="fas fas-popup fa-info-circle"></i>${c.carpark_type}</p>
             <p><i class="fas fas-popup fa-car-side"></i>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%) ${iconLowAvailability}</p>
-            <p><i class="fas fas-popup fa-history"></i>HDB updated: ${c.lots_updated_on}</p>
+            <p><i class="fas fas-popup fa-history"></i>${syncHDBDate}</p>
             <hr class="my-2">
             <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="me@mail.com">
             <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
@@ -381,6 +392,25 @@ function displayPrayerTimes(prayerTimes) {
    }
 }
 
+// Standardise Date/Time format within the app
+function getTodayDateTimeSG (strPrefix) {
+   let currentdate = new Date(); 
+   let today = formatDateTimeSG(strPrefix, currentdate);
+   return today;
+}
+
+function formatDateTimeSG (strPrefix, dateTime) {
+
+   let formattedDateTime = strPrefix  
+   + dateTime.getDate() + "/"
+   + (dateTime.getMonth()+1)  + "/" 
+   + dateTime.getFullYear() + " @ "  
+   + dateTime.getHours() + ":"  
+   + dateTime.getMinutes() + ":" 
+   + dateTime.getSeconds();
+   return formattedDateTime;
+}
+
 // ------------------------------------------------------------
 // Navbar section for District listing (DOM element rendering)
 // ------------------------------------------------------------
@@ -406,7 +436,9 @@ function loadDistrictDropdown(arrObjDistricts) {
 // DECLARATIVE SECTION HERE
 // *****************************************
 // wait for the DOM to be ready before loading
-window.addEventListener('DOMContentLoaded', async function () {
+window.addEventListener('DOMContentLoaded', async function (e) {
+
+
    // *********************************
    // LOAD Data
    // *********************************
@@ -439,7 +471,6 @@ window.addEventListener('DOMContentLoaded', async function () {
 
    // update with carpark lots availability for each carpark
    mosquesCarparksAvailable = await refreshMosqueCarparkAvailability(mosquesCarparks, 'https://api.data.gov.sg/v1/transport/carpark-availability')
-   // console.log(mosquesCarparksAvailable);
 
    // *********************************
    // PLOT MAP MARKERS
@@ -457,8 +488,8 @@ window.addEventListener('DOMContentLoaded', async function () {
    document.querySelector('#toggle-mosques-fas').style.color = "#bdd2b6";
    document.querySelector('#toggle-carparks-fas').style.color = "#bdd2b6";
 
-   let today = new Date().toJSON();
-   document.querySelector('#carpark-refresh').innerHTML = `<i class="fas fa-history"></i> Last refreshed on ${today}`;
+   let refreshMsg = getTodayDateTimeSG ("HDB Carpark Lots synched on ");
+   document.querySelector('#carpark-refresh').innerHTML = `<p><i class="fas fa-history p-3"></i>${refreshMsg}</p>`;
 
    // create listeners for rendered dropdown inside DOMContentLoaded
    for (let district of document.querySelectorAll(".district")) {
@@ -479,18 +510,15 @@ window.addEventListener('DOMContentLoaded', async function () {
       })
    }
 
-   // for (let marker of document.querySelectorAll(".dd-prayer")) {
-   //    marker.addEventListener('click', function(e) {
-   //       alert("click marker: " + e.target.innerText)
-   //    })
-   // }
 })
 
 // *********************************************
 // REFRESH carpark availability every 3 minutes
 // *********************************************
-setInterval(async function() {
+setInterval(async function(e) {
    
+   e.preventDefault();
+
    // carpark availability
    mosquesCarparksAvailable = await refreshMosqueCarparkAvailability(mosquesCarparks, 'https://api.data.gov.sg/v1/transport/carpark-availability')
    
@@ -502,8 +530,8 @@ setInterval(async function() {
    plotMosqueMarkers();
    plotCarparks();
 
-   let today = new Date().toJSON();
-   document.querySelector('#carpark-refresh').innerHTML = today;
+   let refreshMsg = getTodayDateTimeSG ("HDB Carpark Lots synched on ");
+   document.querySelector('#carpark-refresh').innerHTML = `<p><i class="fas fa-history p-3"></i>${refreshMsg}</p>`;
 
 }, 180000) // 1s = 1000
 
@@ -530,8 +558,8 @@ document.querySelector('#toggle-carparks-fas').addEventListener('click', functio
    }
 })
 
-// Locate me is not toggle but to serve as getting current location
-// Layer is always turn-on. similar to Muis
+// Not for toggle but to refresh the current location and set map view
+// Layer is always turn-on
 document.querySelector('#locate-me-fas').addEventListener('click', function() {
 
    showCurrentLocation();
@@ -557,9 +585,3 @@ document.querySelector('#btn-search').addEventListener('click', function () {
    }
 })
 
-// let selectedPrayer = document.querySelectorAll(".dd-prayer")
-// for (let p of selectedPrayer) {
-//    p.addEventListener('click', function(e) {
-//       alert('click me W');
-//    })
-// }

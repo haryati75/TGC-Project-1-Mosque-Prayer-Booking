@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Noto+Sans+KR:wght@300;400;700&display=swap');
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
     background-color: whitesmoke;
     margin: 0px;
@@ -113,6 +117,8 @@ p {
 .prayer-time {
   color: #f55c47;
 }
+
+
 
 /* -------------------------------------------------- */
 /* Social Media icons bar - follow their brand colors */

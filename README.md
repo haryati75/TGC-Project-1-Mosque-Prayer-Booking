@@ -154,7 +154,7 @@ We noticed the polygon expects a certain order of the (lat,lng) coordinates.  Ot
 ### Sorting (lat,lng) coordinates for drawing polygon on map:
 >A simple workaround to _minimise this occurence_ is to sort the coordinates.  A **bubble-sort algorithm** is used to arrange the coordinates before returning the resulting (lat,lng) array. See below polygon after sorted.  However, still unsure if it is best to sort by latitude or longitude.
 
-![Sorted polygon](images/sorted-polygon.PNG)
+![Sorted polygon](images/sorted-polygon.png)
 
 # Animation - Squash and Stretch
 Use of simple method of squash and stretch to create a more realistic **bouncing of the navbar icons**.  This means when image is stretch or squash, it must maintain the same volume of scaling. 

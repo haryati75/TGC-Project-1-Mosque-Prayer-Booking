@@ -16,7 +16,6 @@ function sortLatLngBubble (arrLatLngs) {
     let minLat = Math.min(...arrLat);
     let maxLat = Math.max(...arrLat);
 
-    // console.log('Lat:', minLat, maxLat, (maxLat - minLat)/minLat * 100); 
     // if Lat hits > 2, sort by lng? This seems to work for Singapore map, most of the time
     if (((maxLat - minLat)/minLat * 100) > 2) {
         for (let i = 0; i < len; i++) {

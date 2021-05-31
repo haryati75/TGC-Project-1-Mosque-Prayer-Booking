@@ -25,7 +25,7 @@
     <!-- *************************** -->
     <!-- Setup Bootstrap navbar here -->
     <!-- *************************** -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light py-0">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-0" id="navbar-mymasjid">
 
         <!-- Display Logo for Small Screen -->
         <a class="navbar-brand d-md-none d-lg-none mr-0" href="#">
@@ -50,7 +50,7 @@
                 <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-mosque" id="toggle-mosques-fas"></i></a>
             </div>
             <div class="box bounce">
-                <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-street-view" id="locate-me-fas"></i></a>
+                <a class="nav-link active p-0" aria-current="page" href="#"><i class="fas fa-street-view" id="locate-me-fas" data-toggle="tooltip" data-placement="top" title="Finding your location..."></i></a>
             </div>
         </div>
 
@@ -93,7 +93,6 @@
     <!-- *************************** -->
     <!--       Footer Section        -->
     <!-- *************************** -->
-    <!-- Singapore Prayer Times, Credits and Social Media -->
     <footer class="my-footer container-fluid">
         <div class="row justify-content-start" id="footer-prayer">
             <div class="col-12 d-inline-flex justify-content-start align-items-center p-2">
@@ -101,10 +100,15 @@
                 <h1>Singapore Prayer Times: <span id="prayer-date"></span></h1>
             </div>
         </div>
+
         <!-- DOM rendering of prayer times -->
         <div class="row" id="prayer-times"></div>
         <hr style="margin-bottom:0;">
-        <div class="row" id="carpark-refresh"></div>
+        <div class="row" id="carpark-refresh"></div> 
+        <a href="#navbar-mymasjid"><i class="far fa-hand-pointer"></i> Back to Top</a>
+        <hr style="margin-bottom:0;">
+        
+        <!-- Credits and social media bar -->
         <div class="row p-2">
             <div class="col-sm footer-credit">
                 <i class="fas fa-bullhorn"></i>

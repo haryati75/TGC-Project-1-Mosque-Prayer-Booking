@@ -438,10 +438,9 @@ function loadDistrictDropdown(arrObjDistricts) {
 // wait for the DOM to be ready before loading
 window.addEventListener('DOMContentLoaded', async function (e) {
 
-
-   // *********************************
+   // ---------------------------------
    // LOAD Data
-   // *********************************
+   // ---------------------------------
    // load prayer times for 2021 from muis.gov.sg
    let prayerTimes = await loadCSV('data/prayer-times-2021.csv');
    displayPrayerTimes(prayerTimes);
@@ -489,12 +488,16 @@ window.addEventListener('DOMContentLoaded', async function (e) {
    document.querySelector('#toggle-carparks-fas').style.color = "#bdd2b6";
 
    let refreshMsg = getTodayDateTimeSG ("HDB Carpark Lots synched on ");
-   document.querySelector('#carpark-refresh').innerHTML = `<p><i class="fas fa-history p-3"></i>${refreshMsg}</p>`;
+   document.querySelector('#carpark-refresh').innerHTML = `<p><i class="fas fa-history"></i>${refreshMsg}</p>`;
 
    // create listeners for rendered dropdown inside DOMContentLoaded
    for (let district of document.querySelectorAll(".district")) {
       district.addEventListener('click', function(e){
          let val = e.target.innerText;
+
+         console.log(val, document.querySelector('#input-search-mosque'));
+         document.querySelector('#input-search-mosque').value = val;
+
          let radius = 600;
 
          if (val.length > 0) {
@@ -531,7 +534,7 @@ setInterval(async function(e) {
    plotCarparks();
 
    let refreshMsg = getTodayDateTimeSG ("HDB Carpark Lots synched on ");
-   document.querySelector('#carpark-refresh').innerHTML = `<p><i class="fas fa-history p-3"></i>${refreshMsg}</p>`;
+   document.querySelector('#carpark-refresh').innerHTML = `<p><i class="fas fa-history"></i>${refreshMsg}</p>`;
 
 }, 180000) // 1s = 1000
 
@@ -570,7 +573,7 @@ document.querySelector('#locate-me-fas').addEventListener('click', function() {
 // SEARCH FUNCTION EVENTS
 // *********************************
 document.querySelector('#btn-search').addEventListener('click', function () {
-   let val = document.getElementById('input-search').value;
+   let val = document.getElementById('input-search-mosque').value;
    let radius = 600;
 
    if (val.length > 0) {
@@ -584,4 +587,5 @@ document.querySelector('#btn-search').addEventListener('click', function () {
       }
    }
 })
+
 

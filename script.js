@@ -193,7 +193,7 @@ function plotSearchMosque (latLng, radius) {
    }).addTo(layerSearchArea);
 
    map.addLayer(layerSearchArea);
-   map.setView(latLng, 16);
+   map.setView(latLng, 18);
 }
 
 // draw a polyline or polygon if more than one mosque found
@@ -341,8 +341,9 @@ function plotMosqueRadius() {
 // Book Prayer Actions: Dropdown button on each marker
 // ------------------------------------------------------------
 function popupDropdownClick(mosque, prayerSession){
-   console.log(mosque, prayerSession);
-   alert("You have selected to book your prayer: " + prayerSession + "\nAt Masjid " + mosque + "\nNOTE: This is for demo purpose only.");
+   document.querySelector('#booked-mosque-time').innerHTML = `
+      <i class="fas fa-mosque"></i>Masjid ${mosque}<br>
+      <i class="fas fa-calendar-alt"></i>Today ${getToday()} for ${prayerSession}`;
 }
 
 // Prepare HTML for Book Prayer Dropdown button at mosque/carpark markers,
@@ -360,18 +361,17 @@ function bindBookPrayer(mosque) {
    let datePrayerInfo = getPrayerInfoByDate(getToday(), prayerTimes);
    let sessionsHTML = ""
    for (let s of datePrayerInfo.schedule.slice(2)) {
-      sessionsHTML += `<a class="dropdown-item dd-prayer" href="#" onclick="popupDropdownClick('${mosque}','${s.session}')">${s.session} | ${s.time}</a>`
+      sessionsHTML += `<a class="dropdown-item dd-prayer" data-toggle="modal" href="#book-complete" onclick="popupDropdownClick('${mosque}','${s.session} | ${s.time}')">${s.session} | ${s.time}</a>`
    }
    strHTML += sessionsHTML + `
             <div class="dropdown-divider"></div>
-               <a class="dropdown-item dd-prayer" href="#">Friday</a>
+               <a class="dropdown-item dd-prayer" data-toggle="modal" href="#book-complete" onclick="popupDropdownClick('${mosque}','Friday')">Friday</a>
             </div>
          </div>
       `;
 
    return strHTML;
 }
-
 
 // -----------------------------------------------
 // Standardise Date/Time format within the app
@@ -604,16 +604,3 @@ document.querySelector('#btn-search').addEventListener('click', function () {
    }
 })
 
-// L.BookHandler = L.BookHandler.extend({
-//    addHooks: function() {
-//       L.DomEvent.on(document.querySelectorAll('.dd-prayer'), 'click', this.alertMe, this);
-//    },
-
-//    removeHooks: function() {
-//       L.DomEvent.off(document.querySelectorAll('.dd-prayer'), 'click', this.alertMe, this);
-//    },
-
-//    alertMe: function(e) {
-//       alert("You click me")
-//    }
-// })

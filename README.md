@@ -2,7 +2,7 @@
 :warning: **IMPORTANT**: This app is for demonstration and educational purpose only. DO NOT use this web app for actual booking of mosque prayer slots. Please go to [www.muis.gov.sg]('http://www.muis.gov.sg') for details on prayer bookings of mosques in Singapore.
 
 
-**Mock up** web app for booking a prayer session at mosques in Singapore using *Leaflet* interactive map. The map also shows nearby ***HDB car parks** with **live-updates of available lots*** - specially for congregant drivers who needs to find HDB parking lots around the mosque area since the mosques have very limited/none parking areas.
+**Mock up** web app for booking a prayer session at mosques in Singapore using *Leaflet* interactive map. The map also shows nearby ***HDB car parks** with **live-updates of available lots*** - specially for drivers who need to find HDB parking lots around the mosque area since the mosques have very limited/none parking areas.
 
 URL: https://mosque-prayer-booking.netlify.app/
 
@@ -18,9 +18,9 @@ URL: https://mosque-prayer-booking.netlify.app/
 ## Business Use Case
 After Singapore’s circuit-breaker in Mar 2020, mosques in Singapore are gradually opening up for Muslims to pray at the mosques.  Since Dec 2020, the **Majlis Ugama Islam Singapura (or Muis)** announced mosques may re-open with limited congregants for the weekly Friday prayers. Now, most mosques offer other daily prayer sessions (Zuhur, Asar, etc).  However, there is no more walk-ins allowed and congregants need to book a prayer slot before visiting the mosques.
 
-Congregants who drive also face difficulty to find available parking lots as most mosques do not provide or have limited parking spaces.  This creates traffic congestion with illegal parkings of nearby roads. This happens usually during the weekly Friday prayers, which is obligatory for Muslim men to attend the sermons and perform their prayers at the mosques at around 1pm to 2pm.
+Congregants who drive also face difficulty to find available parking lots as most mosques do not provide or have limited parking spaces.  This sometimes creates traffic congestion with illegal parkings of nearby roads. It usually happens during the weekly Friday prayers, which is obligatory for Muslim men to attend the sermons and perform their prayers at the mosques at around 1pm to 2pm.
 
-To manage crowd control, the app only allows booking for today only.
+To manage crowd control, the app allows booking for today only.
 
 
 ## Objectives
@@ -119,14 +119,14 @@ Data are extracted, transformed and loaded to the following structure as Objects
 # Feature: Search Mosque
 The search feature is only used to locate a specific mosques or an area of mosques and can highlight the nearby carparks within set radius (in KM).
 
-The search parametes are:
+The user can search for mosque(s) based on the following parameters:
 * By *Mosque Name*
 * By *Mosque or Carpark Address* (e.g. Partial Street Name)
 * By *Mosque Postal Code*
 * By *Mosque Sector Code*
 * By *General District Location*
 
-1. Retrieve search string and pass as parameter to **getLocation()** method
+1. The input search string is passed to the **getLocation()** method
 
 2. **Priority One: Each Mosque**
     1. Exact Match of Postal Code

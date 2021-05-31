@@ -7,6 +7,7 @@ map.setView(singapore, 13); // set the center point
 // with its nearby carparks and carparks' availability 
 let mosquesCarparks = [];  
 let mosquesCarparksAvailable = [];
+let prayerTimes = [];
 let radiusKM = 0.5;
 
 // setup the tile layer
@@ -277,22 +278,8 @@ function plotMosqueMarkers() {
          <p><i class="fas fas-popup fa-phone-alt"></i>${m.telephone}</p>
          <p><i class="fas fas-popup fa-draw-polygon"></i>District: ${m.general_location}</p>
          <hr class="my-2">
+         ${bindBookPrayer(m.mosque)}
 
-         <input type="email" class="form-control" id="exampleDropdownFormEmail1" placeholder="me@mail.com">
-         <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
-         <div class="btn-group mt-10">
-            <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               Book a Prayer Today
-            </button>
-            <div class="dropdown-menu">
-               <a class="dropdown-item dd-prayer" href="#">Zuhur</a>
-               <a class="dropdown-item dd-prayer" href="#">Asar</a>
-               <a class="dropdown-item dd-prayer" href="#">Maghrib</a>
-               <a class="dropdown-item dd-prayer" href="#">Isyak</a>
-               <div class="dropdown-divider"></div>
-               <a class="dropdown-item dd-prayer" href="#">Friday</a>
-            </div>
-         </div>
       </div>
       `);
    }
@@ -327,21 +314,7 @@ function plotCarparks() {
             <p><i class="fas fas-popup fa-car-side"></i>Available Lots: ${c.lots_info.lots_available} / ${c.lots_info.total_lots} (${percentAvailable.toFixed(2)}%) ${iconLowAvailability}</p>
             <p><i class="fas fas-popup fa-history"></i>${syncHDBDate}</p>
             <hr class="my-2">
-            <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="me@mail.com">
-            <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            <div class="btn-group mt-10">
-               <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Book a Prayer Today
-               </button>
-               <div class="dropdown-menu">
-                  <a class="dropdown-item dd-prayer" href="#">Zuhur</a>
-                  <a class="dropdown-item dd-prayer" href="#">Asar</a>
-                  <a class="dropdown-item dd-prayer" href="#">Maghrib</a>
-                  <a class="dropdown-item dd-prayer" href="#">Isyak</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item dd-prayer" href="#">Friday</a>
-               </div>
-            </div>
+            ${bindBookPrayer(m.mosque)}
          </div>
          `);
       }
@@ -365,34 +338,53 @@ function plotMosqueRadius() {
 }
 
 // ------------------------------------------------------------
-// Footer section for Prayer Times (DOM element rendering)
+// Book Prayer Actions: Dropdown button on each marker
 // ------------------------------------------------------------
-// display prayer times at footer
-function displayPrayerTimes(prayerTimes) {
-   // get today's date in same format as prayer times (d/m/yyyy)
-   let today = new Date().toJSON().slice(0,10);
-   let [yyyy, mm, dd] = today.split('-').map(d => parseInt(d));
-   today = dd+'/'+mm+'/'+yyyy
-   let datePrayerInfo = getPrayerInfoByDate(today, prayerTimes);
-
-   // fill up prayer times at footer
-   let footerPrayerDate = document.getElementById('prayer-date');
-   footerPrayerDate.innerHTML = datePrayerInfo.Date + ' (' + datePrayerInfo.Day +')';
-   // render the list here
-   let prayerTimesDiv = document.querySelector('#prayer-times');
-   for (let s of datePrayerInfo.schedule) {
-      let divElement = document.createElement('div');
-      divElement.className = "col-6 col-md-4 col-lg-2 prayer-time"
-
-      let pElement = document.createElement('p');
-      pElement.innerHTML = s.session + ' | ' + s.time;
-
-      divElement.appendChild(pElement);
-      prayerTimesDiv.appendChild(divElement);
-   }
+function popupDropdownClick(mosque, prayerSession){
+   console.log(mosque, prayerSession);
+   alert("You have selected to book your prayer: " + prayerSession + "\nAt Masjid " + mosque + "\nNOTE: This is for demo purpose only.");
 }
 
+// Prepare HTML for Book Prayer Dropdown button at mosque/carpark markers,
+// with Prayer Sessions as dropdown-items
+function bindBookPrayer(mosque) {
+   let strHTML = `
+      <input type="email" class="form-control" id="exampleDropdownFormEmail2" placeholder="me@mail.com">
+      <small style="padding-bottom: 10px" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      <div class="btn-group mt-10">
+         <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Book a Prayer Today
+         </button>
+         <div class="dropdown-menu">
+   `
+   let datePrayerInfo = getPrayerInfoByDate(getToday(), prayerTimes);
+   let sessionsHTML = ""
+   for (let s of datePrayerInfo.schedule.slice(2)) {
+      sessionsHTML += `<a class="dropdown-item dd-prayer" href="#" onclick="popupDropdownClick('${mosque}','${s.session}')">${s.session} | ${s.time}</a>`
+   }
+   strHTML += sessionsHTML + `
+            <div class="dropdown-divider"></div>
+               <a class="dropdown-item dd-prayer" href="#">Friday</a>
+            </div>
+         </div>
+      `;
+
+   return strHTML;
+}
+
+
+// -----------------------------------------------
 // Standardise Date/Time format within the app
+// for standard format
+// -----------------------------------------------
+function getToday() {
+   // get today's date in format (d/m/yyyy)
+   let today = new Date().toJSON().slice(0,10);
+   let [yyyy, mm, dd] = today.split('-').map(d => parseInt(d));
+   today = dd+'/'+mm+'/'+yyyy;
+   return today;
+}
+
 function getTodayDateTimeSG (strPrefix) {
    let currentdate = new Date(); 
    let today = formatDateTimeSG(strPrefix, currentdate);
@@ -400,7 +392,6 @@ function getTodayDateTimeSG (strPrefix) {
 }
 
 function formatDateTimeSG (strPrefix, dateTime) {
-
    let formattedDateTime = strPrefix  
    + dateTime.getDate() + "/"
    + (dateTime.getMonth()+1)  + "/" 
@@ -432,9 +423,34 @@ function loadDistrictDropdown(arrObjDistricts) {
    }
 }
 
-// *****************************************
-// DECLARATIVE SECTION HERE
-// *****************************************
+// ------------------------------------------------------------
+// Footer section for Prayer Times (DOM element rendering)
+// ------------------------------------------------------------
+// display prayer times at footer
+function displayPrayerTimes() {
+   let datePrayerInfo = getPrayerInfoByDate(getToday(), prayerTimes);
+
+   // fill up prayer times at footer
+   let footerPrayerDate = document.getElementById('prayer-date');
+   footerPrayerDate.innerHTML = datePrayerInfo.Date + ' (' + datePrayerInfo.Day +')';
+   
+   // render the list here
+   let prayerTimesDiv = document.querySelector('#prayer-times');
+   for (let s of datePrayerInfo.schedule) {
+      let divElement = document.createElement('div');
+      divElement.className = "col-6 col-md-4 col-lg-2 prayer-time"
+
+      let pElement = document.createElement('p');
+      pElement.innerHTML = s.session + ' | ' + s.time;
+
+      divElement.appendChild(pElement);
+      prayerTimesDiv.appendChild(divElement);
+   }
+}
+
+// ***********************************************
+// DECLARATIVE SECTION HERE incl DOMContentLoaded
+// ***********************************************
 // wait for the DOM to be ready before loading
 window.addEventListener('DOMContentLoaded', async function (e) {
 
@@ -442,7 +458,7 @@ window.addEventListener('DOMContentLoaded', async function (e) {
    // LOAD Data
    // ---------------------------------
    // load prayer times for 2021 from muis.gov.sg
-   let prayerTimes = await loadCSV('data/prayer-times-2021.csv');
+   prayerTimes = await loadCSV('data/prayer-times-2021.csv');
    displayPrayerTimes(prayerTimes);
 
    // load carpark information with geo location - data.gov.sg (HDB)
@@ -588,4 +604,16 @@ document.querySelector('#btn-search').addEventListener('click', function () {
    }
 })
 
+// L.BookHandler = L.BookHandler.extend({
+//    addHooks: function() {
+//       L.DomEvent.on(document.querySelectorAll('.dd-prayer'), 'click', this.alertMe, this);
+//    },
 
+//    removeHooks: function() {
+//       L.DomEvent.off(document.querySelectorAll('.dd-prayer'), 'click', this.alertMe, this);
+//    },
+
+//    alertMe: function(e) {
+//       alert("You click me")
+//    }
+// })
